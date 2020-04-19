@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.idragon.dfdemo.util.ExcelUtils;
 import com.idragon.dfdemo.util.WordUtils;
 import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
+import com.idragon.dfdemo.util.fcm.dto.InterfaceInfo;
 import com.idragon.dfdemo.util.fcm.word.BeanInfoWordUtils;
+import com.idragon.dfdemo.util.fcm.word.InterfaceInfoWordUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import java.util.List;
@@ -15,18 +17,29 @@ import java.util.List;
  * FCM word文档生产工具
  */
 public class FcmWordIndex {
+    public FcmWordIndex() {
+    }
+
     public static void main(String[] args) throws Exception {
         //原始录入数据
         String sourceData="/Users/chenxinjun/Downloads/930.xlsx";
-        // doc文档输出工具
-        String targetName = "/Users/chenxinjun/Downloads/hh.docx";
-        // 解析录入数据，生成对应实体
+//        // doc文档输出工具
+        String beanListDoc = "/Users/chenxinjun/Downloads/beanList.docx";
         JSONObject data= ExcelUtils.getExcelData(sourceData);
-        List<BeanInfo> list = FcmDataUtils.getBeanInfos(data);
-        String beanModel = FcmWordIndex.class.getResource("/").getPath()+"/doc/beanModel.docx";
-
-        XWPFDocument document = BeanInfoWordUtils.getBeanListDoc(beanModel, list);
+        // 处理实体信息
+        List<BeanInfo> booleanList = FcmDataUtils.getBeanInfos(data);
+        BeanInfoWordUtils beanInfoWordUtils=new BeanInfoWordUtils();
         WordUtils utils=new WordUtils();
-        utils.exportFile(document,targetName);
+        XWPFDocument document = beanInfoWordUtils.getBeanListDocument(booleanList);
+        utils.exportFile(document,beanListDoc);
+        
+        //处理接口信息    
+        String interfaceListDoc = "/Users/chenxinjun/Downloads/interfaceList.docx";
+        List<InterfaceInfo> interfaceBeanInfos = FcmDataUtils.getInterfaceInfos(data);
+        InterfaceInfoWordUtils interfaceInfoWordUtils=new InterfaceInfoWordUtils();
+        interfaceInfoWordUtils.registerBeanInfo(booleanList);
+        XWPFDocument listDoc = interfaceInfoWordUtils.getInterfaceDocumentWithData(interfaceBeanInfos.get(0));
+        utils.exportFile(listDoc,interfaceListDoc);
+
     }
 }

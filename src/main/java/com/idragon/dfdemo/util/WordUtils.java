@@ -1,13 +1,13 @@
 package com.idragon.dfdemo.util;
 
-import com.idragon.dfdemo.util.fcm.word.InterfaceInfoReplaceUtil;
-import com.idragon.dfdemo.util.fcm.dto.InterfaceInfo;
 import org.apache.poi.xwpf.usermodel.*;
+import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlOptions;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -23,9 +23,7 @@ public class WordUtils {
      * @param add 增加或删除行数 if add>0 增加行 add<0 删除行
      * @param fromRow 添加开始行位置（fromRow-1是模版行）
      */
-
-
-    public  static void addOrRemoveRow(XWPFTable table, int add, int fromRow){
+    public   void addOrRemoveRow(XWPFTable table, int add, int fromRow){
         XWPFTableRow row = table.getRow(fromRow-1);
         if(add>0){
             while(add>0){
@@ -40,7 +38,13 @@ public class WordUtils {
             }
         }
     }
-    public static void copyPro(XWPFTableRow sourceRow,XWPFTableRow targetRow) {
+
+    /**
+     * 复制内容
+     * @param sourceRow
+     * @param targetRow
+     */
+    public  void copyPro(XWPFTableRow sourceRow,XWPFTableRow targetRow) {
         //复制行属性
         targetRow.getCtRow().setTrPr(sourceRow.getCtRow().getTrPr());
         List<XWPFTableCell> cellList = sourceRow.getTableCells();
@@ -58,6 +62,21 @@ public class WordUtils {
         }
     }
 
+    /**
+     * 文档字符串替换工具
+     * @param doc
+     * @param oldString
+     * @param newString
+     */
+    public  void replaceText(XWPFDocument doc,String oldString, String newString){
+        //段落替换
+        Iterator<XWPFParagraph> iterator = doc.getParagraphsIterator();
+        XWPFParagraph para;
+        while (iterator.hasNext()) {
+            para = iterator.next();
+            replaceInParagraph(para, oldString,newString);
+        }
+    }
 
     /**
      * 替换段落中的字符串
@@ -66,7 +85,7 @@ public class WordUtils {
      * @param oldString
      * @param newString
      */
-    public static void replaceInParagraph(XWPFParagraph xwpfParagraph, String oldString, String newString) {
+    public  void replaceInParagraph(XWPFParagraph xwpfParagraph, String oldString, String newString) {
         Map<String, Integer> pos_map = findSubRunPosInParagraph(xwpfParagraph, oldString);
         if (pos_map != null) {
             List<XWPFRun> runs = xwpfParagraph.getRuns();
@@ -86,7 +105,7 @@ public class WordUtils {
      * @param substring
      * @return
      */
-    public static Map<String, Integer> findSubRunPosInParagraph(XWPFParagraph xwpfParagraph, String substring) {
+    public  Map<String, Integer> findSubRunPosInParagraph(XWPFParagraph xwpfParagraph, String substring) {
         List<XWPFRun> runs = xwpfParagraph.getRuns();
         int start_pos = 0;
         int end_pos = 0;
@@ -114,40 +133,74 @@ public class WordUtils {
      * @param modelRun
      * @param targetRun
      */
-    public static void copyStyleToText(XWPFRun modelRun,XWPFRun targetRun){
-        if (modelRun.getFontSize() != -1) targetRun.setFontSize(modelRun.getFontSize());
+    public  void copyStyleToText(XWPFRun modelRun,XWPFRun targetRun){
+        if (modelRun.getFontSize() != -1) {
+            targetRun.setFontSize(modelRun.getFontSize());
+        }
         //默认值是五号字体，但五号字体getFontSize()时，返回-1
         targetRun.setFontFamily(modelRun.getFontFamily());
         targetRun.setColor(modelRun.getColor());
     }
+
     /**
-     * 对象追加
-     * @param document
-     * @param doucDocument2
+     * 文档合并工具
+     * @param contentDoc 环境文档
+     * @param appendDoc 追加文档
      * @return
-     * @throws Exception
      */
-    public  XWPFDocument mergeWord(XWPFDocument document,XWPFDocument doucDocument2) throws Exception {
-        XWPFDocument src1Document =document ;
-        XWPFParagraph p = src1Document.createParagraph();
-        //设置分页符
-        p.setPageBreak(true);
+    public XWPFDocument appendDocument(XWPFDocument contentDoc,XWPFDocument appendDoc) throws XmlException {
+        XWPFDocument src1Document =contentDoc ;
         CTBody src1Body = src1Document.getDocument().getBody();
-        XWPFDocument src2Document = doucDocument2;
+        XWPFDocument src2Document = appendDoc;
         CTBody src2Body = src2Document.getDocument().getBody();
-//		    XWPFParagraph p2 = src2Document.createParagraph();
         XmlOptions optionsOuter = new XmlOptions();
         optionsOuter.setSaveOuter();
         String appendString = src2Body.xmlText(optionsOuter);
         String srcString = src1Body.xmlText();
         String prefix = srcString.substring(0,srcString.indexOf(">")+1);
         String mainPart = srcString.substring(srcString.indexOf(">")+1,srcString.lastIndexOf("<"));
-        String sufix = srcString.substring( srcString.lastIndexOf("<") );
+        String suffix = srcString.substring( srcString.lastIndexOf("<") );
         String addPart = appendString.substring(appendString.indexOf(">") + 1, appendString.lastIndexOf("<"));
-        CTBody makeBody = CTBody.Factory.parse(prefix+mainPart+addPart+sufix);
+        String content=prefix+mainPart+addPart+suffix;
+        CTBody makeBody = CTBody.Factory.parse(content);
         src1Body.set(makeBody);
         return src1Document;
     }
+
+
+    /**
+     * 文档模版导入工具
+     * @param contentDoc 环境文档
+     * @param modelDoc 导入模版内容
+     * @param key 导入模版的标识文字【注意不能使用&{name} 这种格式，直接使用字符串name即可】
+     * @return
+     * @throws Exception
+     */
+    public  XWPFDocument importModelToDocument(XWPFDocument contentDoc,XWPFDocument modelDoc,String key) throws Exception {
+        XWPFDocument src1Document =contentDoc ;
+        System.out.println("replace is :"+key);
+        replaceText(contentDoc,key,key);
+        CTBody src1Body = src1Document.getDocument().getBody();
+        XWPFParagraph p = src1Document.createParagraph();
+        //设置分页符
+        p.setPageBreak(false);
+        XWPFDocument src2Document = modelDoc;
+        CTBody src2Body = src2Document.getDocument().getBody();
+        XmlOptions optionsOuter = new XmlOptions();
+        optionsOuter.setSaveOuter();
+        String appendString = src2Body.xmlText(optionsOuter);
+        String srcString = src1Body.xmlText();
+        String prefix = srcString.substring(0,srcString.indexOf(">")+1);
+        String mainPart = srcString.substring(srcString.indexOf(">")+1,srcString.lastIndexOf("<"));
+        String suffix = srcString.substring( srcString.lastIndexOf("<") );
+        String addPart = appendString.substring(appendString.indexOf(">") + 1, appendString.lastIndexOf("<"));
+        String content=prefix+mainPart.replaceAll(key,addPart)+suffix;
+        CTBody makeBody = CTBody.Factory.parse(content);
+        src1Body.set(makeBody);
+        return src1Document;
+    }
+
+
     /**
      * 获取文档对象
      * @param srcPath
@@ -158,27 +211,6 @@ public class WordUtils {
         FileInputStream fis = new FileInputStream(new File(srcPath));
         return new XWPFDocument(fis);
     }
-
-    /**
-     * 获取输出文档
-     * @param xmlContent
-     * @return
-     * @throws IOException
-     */
-    public XWPFDocument getDocumentByXml(String xmlContent) throws IOException {
-        InputStream is = new ByteArrayInputStream(xmlContent.getBytes());
-        return new XWPFDocument(is);
-    }
-
-    /**
-     * 内容替换工具
-     * @param document
-     * @param interfaceInfo 111
-     */
-    public void replaceContent(XWPFDocument document,InterfaceInfo interfaceInfo){
-        InterfaceInfoReplaceUtil.replaceDoc(document,interfaceInfo);
-    }
-
     /**
      * 内容导出
      * @param hwpfDocument
