@@ -44,7 +44,7 @@ public class InterfaceInfoWordUtils {
         this.beanInfoWordUtils = beanInfoWordUtils;
         this.utils = new WordUtils();
         if(StringUtils.isBlank(interfaceModelPath)){
-            this.interfaceModelPath=this.getClass().getResource("/").getPath()+"/doc/interfaceModel.docx";
+            this.interfaceModelPath=this.getClass().getResource("/").getPath()+"doc/interfaceModel.docx";
         }
         if(this.beanInfoWordUtils==null){
             this.beanInfoWordUtils=new BeanInfoWordUtils();
@@ -82,9 +82,9 @@ public class InterfaceInfoWordUtils {
         XWPFDocument document=getInterfaceDocument();
         if(interfaceInfo!=null){
             utils.replaceText(document,"idr_interface_name",interfaceInfo.getName());
-            utils.importModelToDocument(document,
+            document=utils.importModelToDocument(document,
                     beanInfoWordUtils.getBeanDocumentWithData(this.beanInfoMap.get(interfaceInfo.getOutType())),"idr_bean_resp");
-            utils.importModelToDocument(document,
+            document=utils.importModelToDocument(document,
                     beanInfoWordUtils.getBeanDocumentWithData(this.beanInfoMap.get(interfaceInfo.getInType())),"idr_bean_req");
         }
         return document;

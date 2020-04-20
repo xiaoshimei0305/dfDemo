@@ -17,6 +17,10 @@ import java.util.List;
  * FCM word文档生产工具
  */
 public class FcmWordIndex {
+    /**
+     * 构建过程中的临时文件存放位置
+     */
+    public static String wordTemp="/Users/chenxinjun/Downloads/temp.docx";
     public FcmWordIndex() {
     }
 

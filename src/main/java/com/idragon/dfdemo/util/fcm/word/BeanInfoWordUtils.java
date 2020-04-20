@@ -34,8 +34,8 @@ public class BeanInfoWordUtils {
         this.tableModelPath=tableModelPath;
         this.utils=new WordUtils();
         if(StringUtils.isBlank(this.modelPath)){
-            this.modelPath= this.getClass().getResource("/").getPath()+"/doc/beanModel.docx";
-            this.tableModelPath=this.getClass().getResource("/").getPath()+"/doc/tableModel.docx";
+            this.modelPath= this.getClass().getResource("/").getPath()+"doc/beanModel.docx";
+            this.tableModelPath=this.getClass().getResource("/").getPath()+"doc/tableModel.docx";
         }
     }
 
@@ -71,7 +71,7 @@ public class BeanInfoWordUtils {
     public XWPFDocument getBeanDocumentWithData(BeanInfo info) throws Exception {
         XWPFDocument beanDocument = getBeanDocument();
         utils.replaceText(beanDocument,"idr_bean_name",info.getName());
-        utils.importModelToDocument(beanDocument,getTableDocumentWithData(info),"idr_bean_table");
+        beanDocument= utils.importModelToDocument(beanDocument,getTableDocumentWithData(info),"idr_bean_table");
         return beanDocument;
     }
 

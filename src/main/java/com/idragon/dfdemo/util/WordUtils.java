@@ -1,5 +1,6 @@
 package com.idragon.dfdemo.util;
 
+import com.idragon.dfdemo.util.fcm.FcmWordIndex;
 import org.apache.poi.xwpf.usermodel.*;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlOptions;
@@ -151,6 +152,9 @@ public class WordUtils {
     public XWPFDocument appendDocument(XWPFDocument contentDoc,XWPFDocument appendDoc) throws XmlException {
         XWPFDocument src1Document =contentDoc ;
         CTBody src1Body = src1Document.getDocument().getBody();
+        XWPFParagraph p = src1Document.createParagraph();
+        //设置分页符
+        p.setPageBreak(false);
         XWPFDocument src2Document = appendDoc;
         CTBody src2Body = src2Document.getDocument().getBody();
         XmlOptions optionsOuter = new XmlOptions();
@@ -179,11 +183,8 @@ public class WordUtils {
     public  XWPFDocument importModelToDocument(XWPFDocument contentDoc,XWPFDocument modelDoc,String key) throws Exception {
         XWPFDocument src1Document =contentDoc ;
         System.out.println("replace is :"+key);
-        replaceText(contentDoc,key,key);
+        replaceText(contentDoc,key,"${"+key+"}");
         CTBody src1Body = src1Document.getDocument().getBody();
-        XWPFParagraph p = src1Document.createParagraph();
-        //设置分页符
-        p.setPageBreak(false);
         XWPFDocument src2Document = modelDoc;
         CTBody src2Body = src2Document.getDocument().getBody();
         XmlOptions optionsOuter = new XmlOptions();
@@ -194,10 +195,12 @@ public class WordUtils {
         String mainPart = srcString.substring(srcString.indexOf(">")+1,srcString.lastIndexOf("<"));
         String suffix = srcString.substring( srcString.lastIndexOf("<") );
         String addPart = appendString.substring(appendString.indexOf(">") + 1, appendString.lastIndexOf("<"));
-        String content=prefix+mainPart.replaceAll(key,addPart)+suffix;
+        String content=prefix+mainPart.replaceAll("\\$\\{"+key+"\\}",addPart)+suffix;
         CTBody makeBody = CTBody.Factory.parse(content);
         src1Body.set(makeBody);
-        return src1Document;
+        String tempPath= FcmWordIndex.wordTemp;
+        exportFile(src1Document,tempPath);
+        return getDocument(tempPath);
     }
 
 
@@ -208,8 +211,12 @@ public class WordUtils {
      * @throws IOException
      */
     public XWPFDocument getDocument(String srcPath) throws IOException {
-        FileInputStream fis = new FileInputStream(new File(srcPath));
-        return new XWPFDocument(fis);
+        File file=new File(srcPath);
+        FileInputStream fis = new FileInputStream(file);
+        XWPFDocument document=new XWPFDocument(fis);
+        System.out.println("关闭文件："+srcPath);
+        fis.close();
+        return document;
     }
     /**
      * 内容导出
@@ -222,7 +229,8 @@ public class WordUtils {
         try {
             document.write(ostream);
             //输出word文件
-           outs=new FileOutputStream(new File(targetFileName));
+           File temp= new File(targetFileName);
+           outs=new FileOutputStream(temp);
             outs.write(ostream.toByteArray());
         } catch (IOException e) {
             e.printStackTrace();
