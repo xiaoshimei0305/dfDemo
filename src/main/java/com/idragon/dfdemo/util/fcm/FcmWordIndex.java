@@ -28,22 +28,26 @@ public class FcmWordIndex {
         //原始录入数据
         String sourceData="/Users/chenxinjun/Downloads/930.xlsx";
 //        // doc文档输出工具
-        String beanListDoc = "/Users/chenxinjun/Downloads/beanList.docx";
+//        String beanListDoc = "/Users/chenxinjun/Downloads/beanList.docx";
         JSONObject data= ExcelUtils.getExcelData(sourceData);
         // 处理实体信息
         List<BeanInfo> booleanList = FcmDataUtils.getBeanInfos(data);
-        BeanInfoWordUtils beanInfoWordUtils=new BeanInfoWordUtils();
         WordUtils utils=new WordUtils();
-        XWPFDocument document = beanInfoWordUtils.getBeanListDocument(booleanList);
-        utils.exportFile(document,beanListDoc);
+//        BeanInfoWordUtils beanInfoWordUtils=new BeanInfoWordUtils();
+
+//        XWPFDocument document = beanInfoWordUtils.getBeanListDocument(booleanList);
+//        utils.exportFile(document,beanListDoc);
         
         //处理接口信息    
-        String interfaceListDoc = "/Users/chenxinjun/Downloads/interfaceList.docx";
+        String modelDoc = "/Users/chenxinjun/Downloads/test.docx";
+        String hh = "/Users/chenxinjun/Downloads/hh.docx";
         List<InterfaceInfo> interfaceBeanInfos = FcmDataUtils.getInterfaceInfos(data);
         InterfaceInfoWordUtils interfaceInfoWordUtils=new InterfaceInfoWordUtils();
         interfaceInfoWordUtils.registerBeanInfo(booleanList);
-        XWPFDocument listDoc = interfaceInfoWordUtils.getInterfaceDocumentWithData(interfaceBeanInfos.get(0));
-        utils.exportFile(listDoc,interfaceListDoc);
+        XWPFDocument contentDoc = utils.getDocument(modelDoc);
+        contentDoc= interfaceInfoWordUtils.importDocumentByMethods(contentDoc,interfaceBeanInfos);
+        //XWPFDocument listDoc = interfaceInfoWordUtils.getInterfaceDocumentWithData(interfaceBeanInfos.get(0));
+        utils.exportFile(contentDoc,hh);
 
     }
 }

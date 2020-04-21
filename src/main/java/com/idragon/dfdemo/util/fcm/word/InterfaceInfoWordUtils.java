@@ -74,6 +74,24 @@ public class InterfaceInfoWordUtils {
     }
 
     /**
+     * 把文档接口内容导入文档中
+     * @param doc
+     * @param interfaceInfos
+     * @return
+     * @throws Exception
+     */
+    public XWPFDocument importDocumentByMethods(XWPFDocument doc,List<InterfaceInfo> interfaceInfos) throws Exception {
+        if(interfaceInfos!=null&&interfaceInfos.size()>0){
+            for(int i=0;i<interfaceInfos.size();i++){
+                InterfaceInfo item=interfaceInfos.get(i);
+                doc=utils.importModelToDocument(doc,getInterfaceDocumentWithData(item),"idr_method_"+item.getMethodName());
+            }
+        }
+        return doc;
+    }
+
+
+    /**
      * 完成接口文档输出
      * @param interfaceInfo
      * @return

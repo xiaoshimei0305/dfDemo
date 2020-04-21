@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
@@ -82,6 +79,7 @@ public class ExcelUtils {
         if(row!=null){
             Cell cell = row.getCell(index);
             if(cell!=null){
+                cell.setCellType(CellType.STRING);
                 return StringUtils.isBlank(cell.getStringCellValue())?defalutValue:cell.getStringCellValue();
             }
         }

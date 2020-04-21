@@ -70,6 +70,10 @@ public class BeanInfoWordUtils {
      */
     public XWPFDocument getBeanDocumentWithData(BeanInfo info) throws Exception {
         XWPFDocument beanDocument = getBeanDocument();
+        if(info==null){
+            info=new BeanInfo();
+            info.setName("无返回值");
+        }
         utils.replaceText(beanDocument,"idr_bean_name",info.getName());
         beanDocument= utils.importModelToDocument(beanDocument,getTableDocumentWithData(info),"idr_bean_table");
         return beanDocument;
