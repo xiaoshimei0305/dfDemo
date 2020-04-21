@@ -51,6 +51,6 @@ public class FcmWordUtils {
         FcmWordUtils utils=new FcmWordUtils();
         utils.buildWordDocument("/Users/chenxinjun/Downloads/hh.docx",
                 "/Users/chenxinjun/Downloads/test.docx",
-                "/Users/chenxinjun/Downloads/930.xlsx");
+                "/Users/chenxinjun/Downloads/930详设接口记录.xlsx");
     }
 }

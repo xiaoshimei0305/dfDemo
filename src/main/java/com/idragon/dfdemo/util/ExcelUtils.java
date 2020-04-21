@@ -18,6 +18,13 @@ import java.io.IOException;
 public class ExcelUtils {
     private static final String EXCEL_XLS = "xls";
     private static final String EXCEL_XLSX = "xlsx";
+
+    public static void main(String[] args) throws IOException {
+        JSONObject data = getExcelData("/Users/chenxinjun/Downloads/930详设接口记录.xlsx");
+        System.out.println(data.getJSONArray("接口列表").toJSONString());
+    }
+
+
     /**
      * 获取excel文档内容
      * @param fileName 文件名称
@@ -52,7 +59,7 @@ public class ExcelUtils {
                     Row tempRow=sheet.getRow(j);
                     JSONObject item=new JSONObject();
                     boolean allEmpty=true;
-                    for(int k=0;k<lastValueIndex;k++){
+                    for(int k=0;k<=lastValueIndex;k++){
                         String value=getCellValue(tempRow,k,"");
                         item.put(columns[k],value);
                         if(!StringUtils.isBlank(value)){
