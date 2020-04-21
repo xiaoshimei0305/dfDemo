@@ -9,6 +9,7 @@ import com.idragon.dfdemo.util.fcm.word.BeanInfoWordUtils;
 import com.idragon.dfdemo.util.fcm.word.InterfaceInfoWordUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -16,38 +17,40 @@ import java.util.List;
  * @author chenxinjun
  * FCM word文档生产工具
  */
-public class FcmWordIndex {
+public class FcmWordUtils {
     /**
      * 构建过程中的临时文件存放位置
      */
     public static String wordTemp="/Users/chenxinjun/Downloads/temp.docx";
-    public FcmWordIndex() {
+    public FcmWordUtils() {
     }
 
-    public static void main(String[] args) throws Exception {
-        //原始录入数据
-        String sourceData="/Users/chenxinjun/Downloads/930.xlsx";
-//        // doc文档输出工具
-//        String beanListDoc = "/Users/chenxinjun/Downloads/beanList.docx";
-        JSONObject data= ExcelUtils.getExcelData(sourceData);
+    /**
+     * word文档生成工具
+     * @param tagertFilesName  生成目标文件
+     * @param modelFileName  生成模版文件
+     * @param dataSourceFileName  数据来源excel文件
+     */
+    public void buildWordDocument(String tagertFilesName,String modelFileName,String dataSourceFileName) throws Exception {
+        JSONObject data= ExcelUtils.getExcelData(dataSourceFileName);
         // 处理实体信息
         List<BeanInfo> booleanList = FcmDataUtils.getBeanInfos(data);
         WordUtils utils=new WordUtils();
-//        BeanInfoWordUtils beanInfoWordUtils=new BeanInfoWordUtils();
-
-//        XWPFDocument document = beanInfoWordUtils.getBeanListDocument(booleanList);
-//        utils.exportFile(document,beanListDoc);
-        
-        //处理接口信息    
-        String modelDoc = "/Users/chenxinjun/Downloads/test.docx";
-        String hh = "/Users/chenxinjun/Downloads/hh.docx";
         List<InterfaceInfo> interfaceBeanInfos = FcmDataUtils.getInterfaceInfos(data);
+        //接口参数初始化
         InterfaceInfoWordUtils interfaceInfoWordUtils=new InterfaceInfoWordUtils();
         interfaceInfoWordUtils.registerBeanInfo(booleanList);
-        XWPFDocument contentDoc = utils.getDocument(modelDoc);
+        XWPFDocument contentDoc = utils.getDocument(modelFileName);
         contentDoc= interfaceInfoWordUtils.importDocumentByMethods(contentDoc,interfaceBeanInfos);
-        //XWPFDocument listDoc = interfaceInfoWordUtils.getInterfaceDocumentWithData(interfaceBeanInfos.get(0));
-        utils.exportFile(contentDoc,hh);
+        //完成文档内容，生成地址
+        utils.exportFile(contentDoc,tagertFilesName);
+    }
 
+
+    public static void main(String[] args) throws Exception {
+        FcmWordUtils utils=new FcmWordUtils();
+        utils.buildWordDocument("/Users/chenxinjun/Downloads/hh.docx",
+                "/Users/chenxinjun/Downloads/test.docx",
+                "/Users/chenxinjun/Downloads/930.xlsx");
     }
 }

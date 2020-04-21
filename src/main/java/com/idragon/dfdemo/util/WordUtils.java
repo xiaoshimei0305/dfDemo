@@ -1,6 +1,6 @@
 package com.idragon.dfdemo.util;
 
-import com.idragon.dfdemo.util.fcm.FcmWordIndex;
+import com.idragon.dfdemo.util.fcm.FcmWordUtils;
 import org.apache.poi.xwpf.usermodel.*;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlOptions;
@@ -198,7 +198,7 @@ public class WordUtils {
         String content=prefix+mainPart.replaceAll("\\$\\{"+key+"\\}",addPart)+suffix;
         CTBody makeBody = CTBody.Factory.parse(content);
         src1Body.set(makeBody);
-        String tempPath= FcmWordIndex.wordTemp;
+        String tempPath= FcmWordUtils.wordTemp;
         exportFile(src1Document,tempPath);
         return getDocument(tempPath);
     }
