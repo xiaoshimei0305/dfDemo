@@ -103,6 +103,9 @@ public class InterfaceInfoWordUtils {
             utils.replaceText(document,"idr_interface_remark",interfaceInfo.getRemark());
             utils.replaceText(document,"idr_interface_inType",interfaceInfo.getInType());
             utils.replaceText(document,"idr_interface_outType",interfaceInfo.getOutType());
+            utils.replaceText(document,"idr_interface_inName",interfaceInfo.getInName());
+            utils.replaceText(document,"idr_interface_outName",interfaceInfo.getOutName());
+            utils.replaceText(document,"idr_interface_restUrl",interfaceInfo.getRestUrl());
             document=utils.importModelToDocument(document,
                     beanInfoWordUtils.getBeanDocumentWithData(this.beanInfoMap.get(interfaceInfo.getOutType())),"idr_bean_resp");
             document=utils.importModelToDocument(document,

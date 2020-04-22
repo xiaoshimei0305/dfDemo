@@ -41,6 +41,7 @@ public class FcmDataUtils {
                         interfaceInfo.setInName(item.getString("入参名称"));
                         interfaceInfo.setOutName(item.getString("出参名称"));
                         interfaceInfo.setRemark(item.getString("备注"));
+                        interfaceInfo.setRestUrl(item.getString("Rest访问地址"));
                         interfaceInfos.add(interfaceInfo);
                     }
                 }

@@ -50,7 +50,7 @@ public class FcmWordUtils {
     public static void main(String[] args) throws Exception {
         FcmWordUtils utils=new FcmWordUtils();
         utils.buildWordDocument("/Users/rocking/Downloads/hh1.docx",
-                "/Users/rocking/Downloads/cart_2_2020.4.21.docx",
-                "/Users/rocking/Downloads/932.xlsx");
+                "/Users/rocking/Desktop/亚信2020.1.1/上海东方购项目/交易/购物车/购物车详设(初版).docx",
+                "/Users/rocking/Downloads/930详设接口记录.xlsx");
     }
 }
