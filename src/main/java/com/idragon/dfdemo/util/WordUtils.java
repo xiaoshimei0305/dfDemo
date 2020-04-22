@@ -1,6 +1,7 @@
 package com.idragon.dfdemo.util;
 
 import com.idragon.dfdemo.util.fcm.FcmWordUtils;
+import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.xwpf.usermodel.*;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlOptions;
@@ -213,6 +214,7 @@ public class WordUtils {
     public XWPFDocument getDocument(String srcPath) throws IOException {
         File file=new File(srcPath);
         FileInputStream fis = new FileInputStream(file);
+        ZipSecureFile.setMinInflateRatio(-1.0d);
         XWPFDocument document=new XWPFDocument(fis);
         System.out.println("关闭文件："+srcPath);
         fis.close();

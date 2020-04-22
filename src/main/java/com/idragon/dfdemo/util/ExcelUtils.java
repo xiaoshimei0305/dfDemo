@@ -20,7 +20,7 @@ public class ExcelUtils {
     private static final String EXCEL_XLSX = "xlsx";
 
     public static void main(String[] args) throws IOException {
-        JSONObject data = getExcelData("/Users/chenxinjun/Downloads/930详设接口记录.xlsx");
+        JSONObject data = getExcelData("/Users/rocking/Downloads/931.xlsx");
         System.out.println(data.getJSONArray("接口列表").toJSONString());
     }
 

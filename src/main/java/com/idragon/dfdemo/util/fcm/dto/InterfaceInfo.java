@@ -17,6 +17,7 @@ public class InterfaceInfo {
     private String outType;
     private String inName;
     private String outName;
+    private String remark;
 
     public void setInName(String inName) {
         this.inName = inName;

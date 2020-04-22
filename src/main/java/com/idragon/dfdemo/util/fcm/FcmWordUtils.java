@@ -21,7 +21,7 @@ public class FcmWordUtils {
     /**
      * 构建过程中的临时文件存放位置
      */
-    public static String wordTemp="/Users/chenxinjun/Downloads/temp.docx";
+    public static String wordTemp="/Users/rocking/Downloads/temp.docx";
     public FcmWordUtils() {
     }
 
@@ -49,8 +49,8 @@ public class FcmWordUtils {
 
     public static void main(String[] args) throws Exception {
         FcmWordUtils utils=new FcmWordUtils();
-        utils.buildWordDocument("/Users/chenxinjun/Downloads/hh.docx",
-                "/Users/chenxinjun/Downloads/test.docx",
-                "/Users/chenxinjun/Downloads/930详设接口记录.xlsx");
+        utils.buildWordDocument("/Users/rocking/Downloads/hh1.docx",
+                "/Users/rocking/Downloads/cart_2_2020.4.21.docx",
+                "/Users/rocking/Downloads/932.xlsx");
     }
 }

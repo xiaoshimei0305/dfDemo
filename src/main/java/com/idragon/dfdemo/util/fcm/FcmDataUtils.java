@@ -40,6 +40,7 @@ public class FcmDataUtils {
                         interfaceInfo.setOutType(item.getString("出参类型"));
                         interfaceInfo.setInName(item.getString("入参名称"));
                         interfaceInfo.setOutName(item.getString("出参名称"));
+                        interfaceInfo.setRemark(item.getString("备注"));
                         interfaceInfos.add(interfaceInfo);
                     }
                 }

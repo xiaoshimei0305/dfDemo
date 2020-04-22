@@ -100,6 +100,9 @@ public class InterfaceInfoWordUtils {
         XWPFDocument document=getInterfaceDocument();
         if(interfaceInfo!=null){
             utils.replaceText(document,"idr_interface_name",interfaceInfo.getName());
+            utils.replaceText(document,"idr_interface_remark",interfaceInfo.getRemark());
+            utils.replaceText(document,"idr_interface_inType",interfaceInfo.getInType());
+            utils.replaceText(document,"idr_interface_outType",interfaceInfo.getOutType());
             document=utils.importModelToDocument(document,
                     beanInfoWordUtils.getBeanDocumentWithData(this.beanInfoMap.get(interfaceInfo.getOutType())),"idr_bean_resp");
             document=utils.importModelToDocument(document,
