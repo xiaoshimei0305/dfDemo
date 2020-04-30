@@ -1,5 +1,6 @@
 package com.idragon.dfdemo.util.fcm;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.idragon.dfdemo.util.ExcelUtils;
 import com.idragon.dfdemo.util.WordUtils;
@@ -49,8 +50,10 @@ public class FcmWordUtils {
 
     public static void main(String[] args) throws Exception {
         FcmWordUtils utils=new FcmWordUtils();
-        utils.buildWordDocument("/Users/rocking/Downloads/hh1.docx",
-                "/Users/rocking/Desktop/亚信2020.1.1/上海东方购项目/交易/购物车/购物车详设(初版).docx",
-                "/Users/rocking/Downloads/930详设接口记录.xlsx");
+        String docx1 = "/Users/rocking/Downloads/hh1.docx";
+        // String docx2 = "/Users/rocking/Desktop/亚信2020.1.1/上海东方购项目/交易/购物车/购物车详设(初版).docx";
+        String docx2 = "/Users/rocking/Downloads/购物车详设(初版).docx";
+        String xlsx1 = "/Users/rocking/Downloads/930详设接口记录.xlsx";
+        utils.buildWordDocument(docx1, docx2, xlsx1);
     }
 }
