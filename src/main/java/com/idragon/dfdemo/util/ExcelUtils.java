@@ -100,7 +100,7 @@ public class ExcelUtils {
      * @return
      * @throws IOException
      */
-    public static Workbook getWorkbok(String fileName) throws IOException {
+    private static Workbook getWorkbok(String fileName) throws IOException {
         Workbook wb = null;
         File file =new File(fileName.trim());
         FileInputStream in = new FileInputStream(file);

@@ -67,7 +67,12 @@ public class FcmDataUtils {
                 for (int i = 0; i < length; i++) {
                     JSONObject item = ja.getJSONObject(i);
                     String beanCode = item.getString("实体编码").trim();
-                    if (StringUtils.isNotBlank(beanCode)) {
+                    BeanInfo beforeBean = null;
+                    if(beanList.size()>0){
+                        beforeBean = beanList.get(beanList.size()-1);
+                    }
+                    //判断当前实体编码是否一致
+                    if (isChangeNewBean(beanCode,beforeBean)) {
                         BeanInfo currentBeanInfo = new BeanInfo();
                         currentBeanInfo.setCode(beanCode);
                         currentBeanInfo.setModelName(item.getString("模块"));
@@ -78,22 +83,14 @@ public class FcmDataUtils {
                         }
                         currentBeanInfo.setType(EntityTypeEnum.valueOf(valueType.toUpperCase()));
                         currentBeanInfo.setRemark(item.getString("实体说明"));
-                        BeanFieldInfo field = setField(item);
                         List<BeanFieldInfo> fieldList = new ArrayList<>();
-                        fieldList.add(field);
                         currentBeanInfo.setFieldList(fieldList);
+                        setField(currentBeanInfo,item);
                         beanList.add(currentBeanInfo);
                     } else {
-                        if (CollectionUtils.isEmpty(beanList)) {
-                            continue;
+                        if(beforeBean!=null){
+                            setField(beforeBean,item);
                         }
-                        int listLength = beanList.size();
-                        int listIndex = listLength - 1;
-                        BeanInfo currentBeanInfo = beanList.get(listIndex);
-                        beanList.remove(currentBeanInfo);
-                        BeanFieldInfo beanInfo = setField(item);
-                        currentBeanInfo.getFieldList().add(beanInfo);
-                        beanList.add(currentBeanInfo);
                     }
                 }
             }
@@ -101,15 +98,33 @@ public class FcmDataUtils {
         return beanList;
     }
 
+    /**
+     * 判断实体编码是否有变更
+     * @param currentCode
+     * @param beforeBean
+     * @return
+     */
+    private static boolean isChangeNewBean(String currentCode,BeanInfo beforeBean){
+        return StringUtils.isNotBlank(currentCode)||(beforeBean==null||currentCode.equalsIgnoreCase(beforeBean.getCode()));
+    }
 
 
-    private static BeanFieldInfo setField(JSONObject item) {
-        BeanFieldInfo field = new BeanFieldInfo();
-        field.setCode(item.getString("字段编码"));
-        field.setName(item.getString("字段名称"));
-        field.setRequire("是".equalsIgnoreCase(item.getString("是否必填")));
-        field.setType(item.getString("字段类型"));
-        field.setNameLength(item.getString("长度"));
-        return field;
+    /**
+     * 实体添加字段值
+     * @param beanInfo
+     * @param item
+     */
+    private static void setField(BeanInfo beanInfo,JSONObject item){
+        if(beanInfo!=null&&item!=null){
+            BeanFieldInfo field = new BeanFieldInfo();
+            field.setCode(item.getString("字段编码"));
+            field.setName(item.getString("字段名称"));
+            field.setRequire("是".equalsIgnoreCase(item.getString("是否必填")));
+            field.setType(item.getString("字段类型"));
+            field.setNameLength(item.getString("长度"));
+            if(!StringUtils.isBlank(field.getCode())){
+                beanInfo.getFieldList().add(field);
+            }
+        }
     }
 }

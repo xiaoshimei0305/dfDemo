@@ -1,6 +1,5 @@
 package com.idragon.dfdemo.util;
 
-import com.idragon.dfdemo.util.fcm.FcmWordUtils;
 import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.xwpf.usermodel.*;
 import org.apache.xmlbeans.XmlException;
@@ -20,23 +19,68 @@ import java.util.Map;
  */
 public class WordUtils {
     /**
-     *
-     * @param table 对应表格
-     * @param add 增加或删除行数 if add>0 增加行 add<0 删除行
-     * @param fromRow 添加开始行位置（fromRow-1是模版行）
+     * 临时文件存储位置
      */
-    public   void addOrRemoveRow(XWPFTable table, int add, int fromRow){
-        XWPFTableRow row = table.getRow(fromRow-1);
-        if(add>0){
-            while(add>0){
+    private static final String tempFile="temp.docx";
+
+
+    /**
+     * 添加或者删除表格
+     * @param table 表格对象
+     * @param rows 增加或删除行数 if rows>0 增加行 rows<0 删除行
+     * @param locationRow 添加开始位置【以开始行为模版】
+     */
+    public   void addOrRemoveRow(XWPFTable table, int rows, int locationRow){
+      addOrRemoveRow(table,rows,locationRow,locationRow);
+    }
+
+    /**
+     * 尾数后面添加行
+     * @param table 表格对象
+     * @param rows 增加或删除行数 if rows>0 增加行 rows<0 删除行
+     * @param modelRow
+     */
+    public void addRowStartLast(XWPFTable table, int rows, int modelRow){
+        int fromRow=table.getRows().size();
+        addOrRemoveRow(table,rows,fromRow,modelRow);
+    }
+
+    /**
+     * 复制行数据
+     * @param table 表格
+     * @param sourceRow  原始数据行
+     * @param targetRow  目标数据行
+     */
+    public void copyRowData(XWPFTable table, int sourceRow, int targetRow){
+        XWPFTableRow source = table.getRow(sourceRow);
+        XWPFTableRow target = table.getRow(targetRow);
+        List<XWPFTableCell> cellList = source.getTableCells();
+        if(cellList!=null&&cellList.size()>0){
+            for(int i=0;i<cellList.size();i++){
+                String text=source.getCell(i).getText();
+                target.getCell(i).setText(text);
+            }
+        }
+    }
+    /**
+     * 添加或者删除表格
+     * @param table 表格对象
+     * @param rows 增加或删除行数 if rows>0 增加行 rows<0 删除行
+     * @param locationRow 添加开始位置
+     * @param  modelRow 模版行位置
+     */
+    public   void addOrRemoveRow(XWPFTable table, int rows, int fromRow,int modelRow){
+        XWPFTableRow row = table.getRow(modelRow-1);
+        if(rows>0){
+            while(rows>0){
                 copyPro(row,table.insertNewTableRow(fromRow));
-                add--;
+                rows--;
             }
         } else {
-            while(add<0)
+            while(rows<0)
             {
                 table.removeRow(fromRow-1);
-                add++;
+                rows++;
             }
         }
     }
@@ -145,35 +189,6 @@ public class WordUtils {
     }
 
     /**
-     * 文档合并工具
-     * @param contentDoc 环境文档
-     * @param appendDoc 追加文档
-     * @return
-     */
-    public XWPFDocument appendDocument(XWPFDocument contentDoc,XWPFDocument appendDoc) throws XmlException {
-        XWPFDocument src1Document =contentDoc ;
-        CTBody src1Body = src1Document.getDocument().getBody();
-        XWPFParagraph p = src1Document.createParagraph();
-        //设置分页符
-        p.setPageBreak(false);
-        XWPFDocument src2Document = appendDoc;
-        CTBody src2Body = src2Document.getDocument().getBody();
-        XmlOptions optionsOuter = new XmlOptions();
-        optionsOuter.setSaveOuter();
-        String appendString = src2Body.xmlText(optionsOuter);
-        String srcString = src1Body.xmlText();
-        String prefix = srcString.substring(0,srcString.indexOf(">")+1);
-        String mainPart = srcString.substring(srcString.indexOf(">")+1,srcString.lastIndexOf("<"));
-        String suffix = srcString.substring( srcString.lastIndexOf("<") );
-        String addPart = appendString.substring(appendString.indexOf(">") + 1, appendString.lastIndexOf("<"));
-        String content=prefix+mainPart+addPart+suffix;
-        CTBody makeBody = CTBody.Factory.parse(content);
-        src1Body.set(makeBody);
-        return src1Document;
-    }
-
-
-    /**
      * 文档模版导入工具
      * @param contentDoc 环境文档
      * @param modelDoc 导入模版内容
@@ -183,7 +198,6 @@ public class WordUtils {
      */
     public  XWPFDocument importModelToDocument(XWPFDocument contentDoc,XWPFDocument modelDoc,String key) throws Exception {
         XWPFDocument src1Document =contentDoc ;
-        System.out.println("replace is :"+key);
         replaceText(contentDoc,key,"${"+key+"}");
         CTBody src1Body = src1Document.getDocument().getBody();
         XWPFDocument src2Document = modelDoc;
@@ -199,7 +213,7 @@ public class WordUtils {
         String content=prefix+mainPart.replaceAll("\\$\\{"+key+"\\}",addPart)+suffix;
         CTBody makeBody = CTBody.Factory.parse(content);
         src1Body.set(makeBody);
-        String tempPath= FcmWordUtils.wordTemp;
+        String tempPath=this.getClass().getResource("/").getPath()+"doc/"+tempFile;
         exportFile(src1Document,tempPath);
         return getDocument(tempPath);
     }
@@ -216,7 +230,6 @@ public class WordUtils {
         FileInputStream fis = new FileInputStream(file);
         ZipSecureFile.setMinInflateRatio(-1.0d);
         XWPFDocument document=new XWPFDocument(fis);
-        System.out.println("关闭文件："+srcPath);
         fis.close();
         return document;
     }

@@ -1,16 +1,14 @@
 package com.idragon.dfdemo.util.fcm.word;
 
 import com.idragon.dfdemo.util.WordUtils;
+import com.idragon.dfdemo.util.fcm.BeanDepenceUtils;
 import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
 import com.idragon.dfdemo.util.fcm.dto.InterfaceInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,10 +26,6 @@ public class InterfaceInfoWordUtils {
      * 实体模型工具
      */
     private BeanInfoWordUtils beanInfoWordUtils;
-    /**
-     * 实体信息登记容器
-     */
-    private Map<String, BeanInfo> beanInfoMap;
 
 
     /**
@@ -49,25 +43,11 @@ public class InterfaceInfoWordUtils {
         if(this.beanInfoWordUtils==null){
             this.beanInfoWordUtils=new BeanInfoWordUtils();
         }
-        this.beanInfoMap=new HashMap<>();
     }
 
     public InterfaceInfoWordUtils() {
         this(null,null);
     }
-
-    /**
-     * 注册实体信息
-     * @param beanInfos
-     */
-    public void registerBeanInfo(List<BeanInfo> beanInfos){
-        if(beanInfos!=null&&beanInfos.size()>0){
-            for(BeanInfo beanInfo:beanInfos){
-                this.beanInfoMap.put(beanInfo.getCode(),beanInfo);
-            }
-        }
-    }
-
 
     public XWPFDocument getInterfaceDocument() throws IOException {
         return utils.getDocument(this.interfaceModelPath);
@@ -77,14 +57,18 @@ public class InterfaceInfoWordUtils {
      * 把文档接口内容导入文档中
      * @param doc
      * @param interfaceInfos
+     * @param beanDepenceUtils
      * @return
      * @throws Exception
      */
-    public XWPFDocument importDocumentByMethods(XWPFDocument doc,List<InterfaceInfo> interfaceInfos) throws Exception {
+    public XWPFDocument importDocumentByMethods(XWPFDocument doc, List<InterfaceInfo> interfaceInfos, BeanDepenceUtils beanDepenceUtils) throws Exception {
         if(interfaceInfos!=null&&interfaceInfos.size()>0){
             for(int i=0;i<interfaceInfos.size();i++){
                 InterfaceInfo item=interfaceInfos.get(i);
-                doc=utils.importModelToDocument(doc,getInterfaceDocumentWithData(item),"idr_method_"+item.getMethodName());
+                String key="idr_method_"+item.getMethodName();
+                System.out.println("start find[key:"+key+",name:"+item.getName()+"]....");
+                doc=utils.importModelToDocument(doc,getInterfaceDocumentWithData(item,beanDepenceUtils),key);
+                System.out.println("finish find[key:"+key+",name:"+item.getName()+"]....");
             }
         }
         return doc;
@@ -94,9 +78,10 @@ public class InterfaceInfoWordUtils {
     /**
      * 完成接口文档输出
      * @param interfaceInfo
+     * @param beanDepenceUtils
      * @return
      */
-    public XWPFDocument getInterfaceDocumentWithData(InterfaceInfo interfaceInfo) throws Exception {
+    public XWPFDocument getInterfaceDocumentWithData(InterfaceInfo interfaceInfo, BeanDepenceUtils beanDepenceUtils) throws Exception {
         XWPFDocument document=getInterfaceDocument();
         if(interfaceInfo!=null){
             utils.replaceText(document,"idr_interface_name",interfaceInfo.getName());
@@ -107,37 +92,10 @@ public class InterfaceInfoWordUtils {
             utils.replaceText(document,"idr_interface_outName",interfaceInfo.getOutName());
             utils.replaceText(document,"idr_interface_restUrl",interfaceInfo.getRestUrl());
             document=utils.importModelToDocument(document,
-                    beanInfoWordUtils.getBeanDocumentWithData(this.beanInfoMap.get(interfaceInfo.getOutType())),"idr_bean_resp");
+                    beanInfoWordUtils.getBeanDocumentWithData(beanDepenceUtils.getBeanInfo(interfaceInfo.getOutType()),beanDepenceUtils),"idr_bean_resp");
             document=utils.importModelToDocument(document,
-                    beanInfoWordUtils.getBeanDocumentWithData(this.beanInfoMap.get(interfaceInfo.getInType())),"idr_bean_req");
+                    beanInfoWordUtils.getBeanDocumentWithData(beanDepenceUtils.getBeanInfo(interfaceInfo.getInType()),beanDepenceUtils),"idr_bean_req");
         }
         return document;
-    }
-
-
-    /**
-     * 段落文档替换工具
-     * @param doc
-     * @param interfaceInfo
-     */
-    public   void replaceDoc(XWPFDocument doc, InterfaceInfo interfaceInfo) {
-        WordUtils tools=new WordUtils();
-        //段落替换
-        Iterator<XWPFParagraph> iterator = doc.getParagraphsIterator();
-        XWPFParagraph para;
-        while (iterator.hasNext()) {
-            para = iterator.next();
-            replaceInParagraph(para, interfaceInfo);
-        }
-        //表格替换
-        List<XWPFTable> tables = doc.getTables();
-        for(int i=0;i<tables.size();i++){
-            XWPFTable table=tables.get(i);
-            tools.addOrRemoveRow(table,2,2);
-        }
-        System.out.println(tables.size());
-    }
-    public  void replaceInParagraph(XWPFParagraph para,InterfaceInfo interfaceInfo){
-        utils.replaceInParagraph(para, "${name}",interfaceInfo.getName());
     }
 }
