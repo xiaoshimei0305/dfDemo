@@ -54,12 +54,12 @@ public class BeanInfoWordUtils {
      * @throws Exception
      */
     public XWPFDocument getBeanDocumentWithData(BeanInfo info, BeanDepenceUtils beanDepenceUtils) throws Exception {
-        System.out.println("生成实体文档对象,name:"+info.getName()+",code:"+info.getCode());
         XWPFDocument beanDocument = getBeanDocument();
         if(info==null){
             info=new BeanInfo();
             info.setName("无返回值");
         }
+        System.out.println("生成实体文档对象,name:"+info.getName()+",code:"+info.getCode());
         utils.replaceText(beanDocument,"idr_bean_name",info.getName());
         beanDocument= utils.importModelToDocument(beanDocument,getTableDocumentWithData(info,beanDepenceUtils),"idr_bean_table");
         return beanDocument;

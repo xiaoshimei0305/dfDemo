@@ -7,9 +7,7 @@ import com.idragon.dfdemo.util.fcm.BeanDepenceUtils;
 import com.idragon.dfdemo.util.fcm.FcmDataUtils;
 import com.idragon.dfdemo.util.fcm.FcmWordUtils;
 import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
-import com.idragon.dfdemo.util.fcm.dto.InterfaceInfo;
 import com.idragon.dfdemo.util.fcm.word.BeanInfoWordUtils;
-import com.idragon.dfdemo.util.fcm.word.InterfaceInfoWordUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import java.io.IOException;
@@ -23,8 +21,9 @@ public class Application {
 
     public static void main(String[] args) throws Exception {
         //testDataGet();
-        //testAllDoc();
-        testBeanBuild();
+        testAllDoc();
+        //testBeanBuild();
+        //testImportBean();
     }
     private static void testAllDoc() throws Exception {
         FcmWordUtils utils=new FcmWordUtils();
@@ -59,6 +58,16 @@ public class Application {
             XWPFDocument content = beanInfoWordUtils.getBeanDocumentWithData(info, beanDepenceUtils);
             utils.exportFile(content,taregetDir+info.getCode()+".docx");
         }
+    }
+
+    private static void testImportBean() throws Exception {
+        WordUtils util=new WordUtils();
+        String workPath="/Users/chenxinjun/Downloads/";
+        String parent=workPath+"idrtest.docx";
+        String children=workPath+"/beans/CartAddParam.docx";
+        //XWPFDocument result = util.importModelToDocument(util.getDocument(children), util.getDocument(parent), "idr_method_addCart");
+        XWPFDocument result = util.importModelToDocument(util.getDocument(parent), util.getDocument(children), "idr_method_addCart");
+        util.exportFile(result,workPath+"/fuck.docx");
     }
 
 
