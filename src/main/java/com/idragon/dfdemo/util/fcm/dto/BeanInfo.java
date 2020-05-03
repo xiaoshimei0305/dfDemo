@@ -1,12 +1,15 @@
 package com.idragon.dfdemo.util.fcm.dto;
 
+import com.idragon.dfdemo.util.CodeLoadUtils;
 import com.idragon.dfdemo.util.StringUtils;
 import com.idragon.dfdemo.util.fcm.BeanParseUtils;
 import com.idragon.dfdemo.util.fcm.code.CodeLocationParseUtils;
 import lombok.Data;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author chenxinjun
@@ -25,6 +28,18 @@ public class BeanInfo {
      * 实体关联的包列表
      */
     private List<String> importPackageList;
+    /**
+     * 缓存不被修改的代码部分
+     */
+    private Map<String,String> unChangedCode;
+
+    /**
+     * 加载不被修改的代码部分
+     * @param file
+     */
+    public void loadUnChangeCode(File file){
+        this.unChangedCode=CodeLoadUtils.getUnChangedCode(file);
+    }
 
     /**
      * 获取包类型

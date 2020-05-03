@@ -5,6 +5,7 @@ import com.idragon.dfdemo.configure.FcmFileCongiure;
 import com.idragon.dfdemo.util.ExcelUtils;
 import com.idragon.dfdemo.util.fcm.BeanParseUtils;
 import com.idragon.dfdemo.util.fcm.FcmDataUtils;
+import com.idragon.dfdemo.util.fcm.ServerParseUtils;
 import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
 import com.idragon.dfdemo.util.fcm.dto.InterfaceInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,13 @@ public class DataLoaderService {
         List<BeanInfo>  beanInfos= getBeanList(excelFile);
         return new BeanParseUtils(beanInfos);
     }
+
+    public ServerParseUtils getServerParseUtils(String excelFile) throws IOException {
+        List<InterfaceInfo> list=getInterfaceList(excelFile);
+        ServerParseUtils utils=new ServerParseUtils(list);
+        return utils;
+    }
+
 
 
 }

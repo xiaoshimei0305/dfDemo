@@ -1,5 +1,6 @@
 package com.idragon.dfdemo.web;
 
+import com.idragon.dfdemo.constant.ServerCodeType;
 import com.idragon.dfdemo.server.FcmCodeService;
 import freemarker.template.TemplateException;
 import io.swagger.annotations.Api;
@@ -27,5 +28,23 @@ public class FcmCodeController {
     public void buildBeanCodeFile(@RequestParam(value = "excelFile",required = false) String excelFile,
                                    @RequestParam(value = "beanCode",required = false) String beanCode) throws IOException, TemplateException {
         fcmCodeService.buildBeanCodeFile(excelFile,beanCode);
+    }
+    @ApiOperation(value = "生成控制层代码", notes="生成控制层代码")
+    @RequestMapping(value = "buildControllerCodeFile", method= RequestMethod.POST)
+    @ResponseBody
+    public void buildControllerCodeFile(@RequestParam(value = "excelFile",required = false) String excelFile) throws IOException, TemplateException {
+        fcmCodeService.buildServiceCodeFile(excelFile, ServerCodeType.CONTROLLER);
+    }
+    @ApiOperation(value = "生成服务层代码", notes="生成服务层代码")
+    @RequestMapping(value = "buildServiceCodeFile", method= RequestMethod.POST)
+    @ResponseBody
+    public void buildServiceCodeFile(@RequestParam(value = "excelFile",required = false) String excelFile) throws IOException, TemplateException {
+        fcmCodeService.buildServiceCodeFile(excelFile, ServerCodeType.SERVICE);
+    }
+    @ApiOperation(value = "生成API代码", notes="生成API代码")
+    @RequestMapping(value = "buildApiCodeFile", method= RequestMethod.POST)
+    @ResponseBody
+    public void buildApiCodeFile(@RequestParam(value = "excelFile",required = false) String excelFile) throws IOException, TemplateException {
+        fcmCodeService.buildServiceCodeFile(excelFile, ServerCodeType.API);
     }
 }

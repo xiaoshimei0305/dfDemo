@@ -1,6 +1,7 @@
 package com.idragon.dfdemo.server;
 
 import com.idragon.dfdemo.configure.FcmFileCongiure;
+import com.idragon.dfdemo.constant.ServerCodeType;
 import com.idragon.dfdemo.util.StringUtils;
 import com.idragon.dfdemo.util.fcm.BeanParseUtils;
 import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
@@ -28,6 +29,8 @@ public class FcmCodeService {
     FcmFileCongiure fcmFileCongiure;
     @Autowired
     FcmBeanCodeService fcmBeanCodeService;
+    @Autowired
+    FcmServerCodeService fcmServerCodeService;
     /**
      * 生成指定对象文档
      * @param excelFileName 数据文件
@@ -61,6 +64,15 @@ public class FcmCodeService {
         for(BeanInfo item:beanInfos){
             fcmBeanCodeService.buildBeanInfo(item,utils);
         }
+    }
+    /**
+     * 创建控制层代码
+     * @param excelFileName
+     * @throws IOException
+     * @throws TemplateException
+     */
+    public void buildServiceCodeFile(String excelFileName, ServerCodeType type) throws IOException, TemplateException {
+        fcmServerCodeService.buildServiceCodeFile(excelFileName,type);
     }
 
 

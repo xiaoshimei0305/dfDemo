@@ -47,7 +47,10 @@ public class FcmBeanCodeService {
      */
     public boolean checkBeanFile(BeanInfo beanInfo){
         if(beanInfo!=null){
-            return getBeanFile(beanInfo).exists();
+            //如果文件存在，加载文件不被修改部分代码
+            // return getBeanFile(beanInfo).exists();
+            beanInfo.loadUnChangeCode(getBeanFile(beanInfo));
+            return false;
         }
         return true;
     }

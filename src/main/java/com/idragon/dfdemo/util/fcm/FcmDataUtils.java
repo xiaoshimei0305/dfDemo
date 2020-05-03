@@ -2,14 +2,12 @@ package com.idragon.dfdemo.util.fcm;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.idragon.dfdemo.util.fcm.dto.BeanFieldInfo;
-import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
-import com.idragon.dfdemo.util.fcm.dto.EntityTypeEnum;
-import com.idragon.dfdemo.util.fcm.dto.InterfaceInfo;
+import com.idragon.dfdemo.util.fcm.dto.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author chenxinjun
@@ -17,6 +15,17 @@ import java.util.List;
  */
 public class FcmDataUtils {
 
+
+    /**
+     *  获取服务列表
+     * @param sheetInfo
+     * @return
+     */
+    public static ServerParseUtils getServiceInfos(JSONObject sheetInfo){
+        List<InterfaceInfo> interfaceInfos=getInterfaceInfos(sheetInfo);
+        ServerParseUtils utils=new ServerParseUtils(interfaceInfos);
+        return utils;
+    }
     /**
      * 获取接口信息
      *
@@ -37,12 +46,13 @@ public class FcmDataUtils {
                         interfaceInfo.setModelName(item.getString("模块"));
                         interfaceInfo.setName(item.getString("名称"));
                         interfaceInfo.setClassName(item.getString("类名称"));
+                        interfaceInfo.setClassPath(item.getString("类路径"));
                         interfaceInfo.setInType(item.getString("入参类型"));
                         interfaceInfo.setOutType(item.getString("出参类型"));
                         interfaceInfo.setInName(item.getString("入参名称"));
                         interfaceInfo.setOutName(item.getString("出参名称"));
                         interfaceInfo.setRemark(item.getString("备注"));
-                        interfaceInfo.setRestUrl(item.getString("Rest访问地址"));
+                        interfaceInfo.setMethodPath(item.getString("方法路径"));
                         interfaceInfos.add(interfaceInfo);
                     }
                 }

@@ -1,6 +1,7 @@
 package com.idragon.dfdemo.util.fcm.code;
 
 import com.idragon.dfdemo.constant.FcmCodeConstants;
+import com.idragon.dfdemo.constant.ServerCodeType;
 import com.idragon.dfdemo.util.fcm.dto.EntityTypeEnum;
 
 /**
@@ -8,6 +9,15 @@ import com.idragon.dfdemo.util.fcm.dto.EntityTypeEnum;
  * @author chenxinjun
  */
 public class CodeLocationParseUtils {
+
+    /**
+     * 获取控制层包路径
+     * @param modeName
+     * @return
+     */
+    public static String getControllerPackageName(String modelName,ServerCodeType type){
+        return getModelPackage(modelName)+type.getPackageName();
+    }
     /**
      * 获取指定模块，指定类型实体的包名称
      * @param model
@@ -55,9 +65,11 @@ public class CodeLocationParseUtils {
     /**
      * 模型名称与编码转换工作
      */
-    private static String getModelCode(String modelName){
+    public static String getModelCode(String modelName){
         if("购物车".equalsIgnoreCase(modelName)||"订购流程".equalsIgnoreCase(modelName)||"订单中心".equalsIgnoreCase(modelName)){
             return "trade";
+        }else if("注册登录".equalsIgnoreCase(modelName)){
+            return "member";
         }
         return "cms";
     }
