@@ -1,14 +1,17 @@
 package com.idragon.dfdemo.util.fcm.dto;
 
 import com.idragon.dfdemo.util.StringUtils;
+import com.idragon.dfdemo.util.fcm.FreeMarkUtils;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @author chenxinjun
  * 接口信息
  */
 @Data
-public class InterfaceInfo {
+public class InterfaceInfo{
     /**
      * 模块名称
      */
@@ -83,4 +86,5 @@ public class InterfaceInfo {
     public String getMethodPath() {
         return StringUtils.getValue(methodPath,methodName);
     }
+
 }

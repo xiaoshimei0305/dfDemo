@@ -32,8 +32,9 @@ public class CodeLoadUtils {
             String content=FileUtils.readFileContent(file);
             if(!StringUtils.isBlank(content)){
                 Matcher m = pattern.matcher(content);
-                if(m.find()){
+                while(m.find()){
                     contents.put(m.group(1),m.group(2));
+                    System.out.println("hah:"+m.group(1)+",name:"+m.group(2));
                 }
             }
         }

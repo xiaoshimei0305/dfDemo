@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ${item};
 </#list>
 //[personImport]CodeStart
-$${(unChangedCode.personImport)!}
+${(unChangedCode.personImport)!}
 //CodeEnd
 /**
 * @author
@@ -27,8 +27,8 @@ public class ${code?cap_first}Controller{
     @ApiOperation("${method.remark}")
     @PostMapping(name = "${method.methodPath}", value = "/${method.methodPath}")
     public @ResponseBody RestResponse<${method.outType?cap_first}> ${method.methodName?uncap_first}(@RequestBody ${method.inType?cap_first} ${method.inType?uncap_first}) {
-    //[${method.methodName?uncap_first}]CodeStart
-        ？？？
+    //[${method.methodName}]CodeStart
+        ${(utils(unChangedCode,method.methodName))!}
     //CodeEnd
         return null;
     }

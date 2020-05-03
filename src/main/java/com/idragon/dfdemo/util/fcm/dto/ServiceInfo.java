@@ -3,6 +3,7 @@ package com.idragon.dfdemo.util.fcm.dto;
 import com.idragon.dfdemo.util.CodeLoadUtils;
 import com.idragon.dfdemo.util.StringUtils;
 import com.idragon.dfdemo.util.fcm.BeanParseUtils;
+import com.idragon.dfdemo.util.fcm.FreeMarkUtils;
 import com.idragon.dfdemo.util.fcm.code.CodeLocationParseUtils;
 import lombok.Data;
 
@@ -33,6 +34,8 @@ public class ServiceInfo {
      * 缓存不被修改的代码部分
      */
     private Map<String,String> unChangedCode;
+
+    private FreeMarkUtils utils=new FreeMarkUtils();
 
     /**
      * 加载不被修改的代码部分
