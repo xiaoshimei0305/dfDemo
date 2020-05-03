@@ -1,9 +1,10 @@
 package com.idragon.dfdemo.util.fcm.word;
 
 import com.idragon.dfdemo.util.WordUtils;
-import com.idragon.dfdemo.util.fcm.BeanDepenceUtils;
+import com.idragon.dfdemo.util.fcm.BeanParseUtils;
 import com.idragon.dfdemo.util.fcm.dto.BeanFieldInfo;
 import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
@@ -16,6 +17,7 @@ import java.util.List;
  * @author chenxinjun
  * 接口信息替换
  */
+@Slf4j
 public class BeanInfoWordUtils {
     /**
      * 实体模型路径
@@ -49,19 +51,19 @@ public class BeanInfoWordUtils {
     /**
      * 获取实体文档
      * @param info
-     * @param beanDepenceUtils
+     * @param beanParseUtils
      * @return
      * @throws Exception
      */
-    public XWPFDocument getBeanDocumentWithData(BeanInfo info, BeanDepenceUtils beanDepenceUtils) throws Exception {
+    public XWPFDocument getBeanDocumentWithData(BeanInfo info, BeanParseUtils beanParseUtils) throws Exception {
         XWPFDocument beanDocument = getBeanDocument();
         if(info==null){
             info=new BeanInfo();
             info.setName("无返回值");
         }
-        System.out.println("生成实体文档对象,name:"+info.getName()+",code:"+info.getCode());
+        log.info("生成实体文档对象,name:{},code:{}",info.getName(),info.getCode());
         utils.replaceText(beanDocument,"idr_bean_name",info.getName());
-        beanDocument= utils.importModelToDocument(beanDocument,getTableDocumentWithData(info,beanDepenceUtils),"idr_bean_table");
+        beanDocument= utils.importModelToDocument(beanDocument,getTableDocumentWithData(info, beanParseUtils),"idr_bean_table");
         return beanDocument;
     }
 
@@ -69,13 +71,13 @@ public class BeanInfoWordUtils {
      * 通过表格模版，获取加入数据的表格实体
      * @return
      */
-    public XWPFDocument getTableDocumentWithData(BeanInfo info, BeanDepenceUtils beanDepenceUtils) throws IOException {
+    public XWPFDocument getTableDocumentWithData(BeanInfo info, BeanParseUtils beanParseUtils) throws IOException {
         XWPFDocument doc=getTableDocument();
         if(info!=null&&info.getFieldList()!=null&&info.getFieldList().size()>0){
             List<XWPFTable> tables = doc.getTables();
             if(tables!=null&&tables.size()>0){
                 XWPFTable table=tables.get(0);
-                List<BeanInfo> list = beanDepenceUtils.parseBeanList(info);
+                List<BeanInfo> list = beanParseUtils.parseBeanList(info);
                 for(int i=0;i<list.size();i++){
                     addBeanInfo(table,list.get(i),i==0);
                 }

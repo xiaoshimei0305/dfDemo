@@ -1,16 +1,13 @@
 package com.idragon.dfdemo.util.fcm.word;
 
 import com.idragon.dfdemo.util.WordUtils;
-import com.idragon.dfdemo.util.fcm.BeanDepenceUtils;
-import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
+import com.idragon.dfdemo.util.fcm.BeanParseUtils;
 import com.idragon.dfdemo.util.fcm.dto.InterfaceInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author chenxinjun
@@ -57,17 +54,17 @@ public class InterfaceInfoWordUtils {
      * 把文档接口内容导入文档中
      * @param doc
      * @param interfaceInfos
-     * @param beanDepenceUtils
+     * @param beanParseUtils
      * @return
      * @throws Exception
      */
-    public XWPFDocument importDocumentByMethods(XWPFDocument doc, List<InterfaceInfo> interfaceInfos, BeanDepenceUtils beanDepenceUtils) throws Exception {
+    public XWPFDocument importDocumentByMethods(XWPFDocument doc, List<InterfaceInfo> interfaceInfos, BeanParseUtils beanParseUtils) throws Exception {
         if(interfaceInfos!=null&&interfaceInfos.size()>0){
             for(int i=0;i<interfaceInfos.size();i++){
                 InterfaceInfo item=interfaceInfos.get(i);
                 String key="idr_method_"+item.getMethodName();
                 System.out.println("start find[key:"+key+",name:"+item.getName()+"]....");
-                doc=utils.importModelToDocument(doc,getInterfaceDocumentWithData(item,beanDepenceUtils),key);
+                doc=utils.importModelToDocument(doc,getInterfaceDocumentWithData(item, beanParseUtils),key);
                 System.out.println("finish find[key:"+key+",name:"+item.getName()+"]....");
             }
         }
@@ -78,10 +75,10 @@ public class InterfaceInfoWordUtils {
     /**
      * 完成接口文档输出
      * @param interfaceInfo
-     * @param beanDepenceUtils
+     * @param beanParseUtils
      * @return
      */
-    public XWPFDocument getInterfaceDocumentWithData(InterfaceInfo interfaceInfo, BeanDepenceUtils beanDepenceUtils) throws Exception {
+    public XWPFDocument getInterfaceDocumentWithData(InterfaceInfo interfaceInfo, BeanParseUtils beanParseUtils) throws Exception {
         XWPFDocument document=getInterfaceDocument();
         if(interfaceInfo!=null){
             utils.replaceText(document,"idr_interface_name",interfaceInfo.getName());
@@ -92,9 +89,9 @@ public class InterfaceInfoWordUtils {
             utils.replaceText(document,"idr_interface_outName",interfaceInfo.getOutName());
             utils.replaceText(document,"idr_interface_restUrl",interfaceInfo.getRestUrl());
             document=utils.importModelToDocument(document,
-                    beanInfoWordUtils.getBeanDocumentWithData(beanDepenceUtils.getBeanInfo(interfaceInfo.getOutType()),beanDepenceUtils),"idr_bean_resp");
+                    beanInfoWordUtils.getBeanDocumentWithData(beanParseUtils.getBeanInfo(interfaceInfo.getOutType()), beanParseUtils),"idr_bean_resp");
             document=utils.importModelToDocument(document,
-                    beanInfoWordUtils.getBeanDocumentWithData(beanDepenceUtils.getBeanInfo(interfaceInfo.getInType()),beanDepenceUtils),"idr_bean_req");
+                    beanInfoWordUtils.getBeanDocumentWithData(beanParseUtils.getBeanInfo(interfaceInfo.getInType()), beanParseUtils),"idr_bean_req");
         }
         return document;
     }

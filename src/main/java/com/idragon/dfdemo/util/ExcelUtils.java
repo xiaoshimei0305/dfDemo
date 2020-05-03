@@ -18,13 +18,6 @@ import java.io.IOException;
 public class ExcelUtils {
     private static final String EXCEL_XLS = "xls";
     private static final String EXCEL_XLSX = "xlsx";
-
-    public static void main(String[] args) throws IOException {
-        JSONObject data = getExcelData("/Users/rocking/Downloads/931.xlsx");
-        System.out.println(data.getJSONArray("接口列表").toJSONString());
-    }
-
-
     /**
      * 获取excel文档内容
      * @param fileName 文件名称

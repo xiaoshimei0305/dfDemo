@@ -29,13 +29,13 @@ public class FcmWordUtils {
         JSONObject data= ExcelUtils.getExcelData(dataSourceFileName);
         // 处理实体信息
         List<BeanInfo> beanList = FcmDataUtils.getBeanInfos(data);
-        BeanDepenceUtils beanDepenceUtils=new BeanDepenceUtils(beanList);
+        BeanParseUtils beanParseUtils =new BeanParseUtils(beanList);
         WordUtils utils=new WordUtils();
         List<InterfaceInfo> interfaceBeanInfos = FcmDataUtils.getInterfaceInfos(data);
         //接口参数初始化
         InterfaceInfoWordUtils interfaceInfoWordUtils=new InterfaceInfoWordUtils();
         XWPFDocument contentDoc = utils.getDocument(modelFileName);
-        contentDoc= interfaceInfoWordUtils.importDocumentByMethods(contentDoc,interfaceBeanInfos,beanDepenceUtils);
+        contentDoc= interfaceInfoWordUtils.importDocumentByMethods(contentDoc,interfaceBeanInfos, beanParseUtils);
         //完成文档内容，生成地址
         utils.exportFile(contentDoc,targetFilesName);
     }

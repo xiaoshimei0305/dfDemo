@@ -1,0 +1,14 @@
+## Freemarker 配置
+#freemarker:
+#  templateDirectory: templates/
+#  charset: UTF-8
+server:
+  port: 8081
+fcmFile:
+  fileBasePath: /Users/chenxinjun/Downloads/fcmWord/
+  ##FCM项目路径
+  codeBasePath: /Users/chenxinjun/work/code/ocj/fcm/
+#  excelDefaultName:
+  beansDir: beans
+#  modelFileName: model.docx
+#  resultFileName: result.docx

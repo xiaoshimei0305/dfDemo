@@ -1,8 +1,8 @@
 package com.idragon.dfdemo.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.xwpf.usermodel.*;
-import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlOptions;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 
@@ -17,6 +17,7 @@ import java.util.Map;
  * @author chenxinjun
  * word文档操作工具
  */
+@Slf4j
 public class WordUtils {
     /**
      * 临时文件存储位置
@@ -244,7 +245,7 @@ public class WordUtils {
         try {
             document.write(ostream);
             //输出word文件
-           File temp= new File(targetFileName);
+           File temp= FileUtils.getFile(targetFileName,true);
            outs=new FileOutputStream(temp);
             outs.write(ostream.toByteArray());
         } catch (IOException e) {

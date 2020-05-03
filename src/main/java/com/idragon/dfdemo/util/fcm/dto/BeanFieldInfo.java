@@ -14,4 +14,5 @@ public class BeanFieldInfo {
     private String nameLength;
     private boolean require;
     private String remark;
+
 }

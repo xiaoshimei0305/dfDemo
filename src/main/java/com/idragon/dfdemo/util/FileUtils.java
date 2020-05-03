@@ -1,50 +1,50 @@
 package com.idragon.dfdemo.util;
 
-import java.io.*;
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
- * @author chenxinjun
  * 文件工具
+ * @author chenxinjun
  */
+@Slf4j
 public class FileUtils {
     /**
-     * 读取文件内容
+     * 获取文件对象
      * @param fileName
+     * @param isCreateWhenNotExits
      * @return
      */
-    public static String readFileContent(String fileName) {
-        File file = new File(fileName);
-        BufferedReader reader = null;
-        StringBuffer sbf = new StringBuffer();
-        InputStream is =null;
-        try {
-            //将字节流转为字符流并建立读缓存区
-            is=new FileInputStream(new File(fileName));
-            reader = new BufferedReader(new InputStreamReader(is,"UTF-8"));
-            String tempStr;
-            while ((tempStr = reader.readLine()) != null) {
-                sbf.append(tempStr);
-            }
-            reader.close();
-            return sbf.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if(is!=null){
-                try {
-                    is.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
+    public static File getFile(String fileName, boolean isCreateWhenNotExits) throws IOException {
+        File temp= new File(fileName);
+        //创建文件目录
+        if(isCreateWhenNotExits&&!temp.exists()){
+            initDir(temp.getParentFile());
         }
-        return sbf.toString();
+        return temp;
+    }
+
+    /**
+     * 初始化文件目录
+     * @param path
+     */
+    public static void initDir(String path){
+        initDir(new File(path));
+    }
+    /**
+     * 初始化目录文件
+     * @param file
+     * @throws IOException
+     */
+    public static void initDir(File file)  {
+        if(file==null||file.exists()){
+            return ;
+        }
+        initDir(file.getParentFile());
+        if(!file.exists()){
+            file.mkdir();
+        }
     }
 }

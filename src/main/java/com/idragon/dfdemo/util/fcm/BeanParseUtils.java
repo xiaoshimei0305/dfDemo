@@ -4,21 +4,34 @@ import com.idragon.dfdemo.util.StringUtils;
 import com.idragon.dfdemo.util.fcm.dto.BeanFieldInfo;
 import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 实体依赖分析工具
  */
-public class BeanDepenceUtils {
+public class BeanParseUtils {
     /**
      * 实体容器
      */
     private Map<String, BeanInfo> beanMap;
 
-    public BeanDepenceUtils(List<BeanInfo> beanList) {
+    /**
+     * 获取所有实体对象
+     * @return
+     */
+    public List<BeanInfo> getAllBeans(){
+        List<BeanInfo> list=new ArrayList<>();
+        if(this.beanMap!=null&&this.beanMap.size()>0){
+            Set<String> keys = this.beanMap.keySet();
+            for(String key:keys){
+                list.add(this.beanMap.get(key));
+            }
+        }
+        return list;
+    }
+
+
+    public BeanParseUtils(List<BeanInfo> beanList) {
         this.beanMap=new HashMap<>();
         if(beanList!=null&&beanList.size()>0){
             for(BeanInfo beanInfo:beanList){
