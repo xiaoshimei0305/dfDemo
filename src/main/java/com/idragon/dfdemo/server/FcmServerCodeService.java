@@ -1,15 +1,11 @@
 package com.idragon.dfdemo.server;
 
-import com.idragon.dfdemo.configure.FcmFileCongiure;
-import com.idragon.dfdemo.constant.FcmCodeConstants;
+import com.idragon.dfdemo.configure.FcmFileConfigure;
 import com.idragon.dfdemo.constant.ServerCodeType;
 import com.idragon.dfdemo.util.FileUtils;
-import com.idragon.dfdemo.util.StringUtils;
 import com.idragon.dfdemo.util.fcm.BeanParseUtils;
 import com.idragon.dfdemo.util.fcm.ServerParseUtils;
 import com.idragon.dfdemo.util.fcm.code.CodeLocationParseUtils;
-import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
-import com.idragon.dfdemo.util.fcm.dto.InterfaceInfo;
 import com.idragon.dfdemo.util.fcm.dto.ServiceInfo;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -28,7 +24,7 @@ public class FcmServerCodeService {
     @Autowired
     Configuration configuration;
     @Autowired
-    FcmFileCongiure fcmFileCongiure;
+    FcmFileConfigure fcmFileConfigure;
     @Autowired
     DataLoaderService dataLoaderService;
 
@@ -99,7 +95,7 @@ public class FcmServerCodeService {
      * @return
      */
     public String getServerFileDir(ServiceInfo serviceInfo,ServerCodeType type){
-        return fcmFileCongiure.getCodeBasePath()+File.separator+ CodeLocationParseUtils.getModelLocation(serviceInfo.getModelName())
+        return fcmFileConfigure.getCodeBasePath()+File.separator+ CodeLocationParseUtils.getModelLocation(serviceInfo.getModelName())
                 +File.separator+CodeLocationParseUtils.getControllerPackageName(serviceInfo.getModelName(),type).replaceAll("\\.",File.separator);
     }
 

@@ -27,7 +27,7 @@ public class DataLoaderController {
     @RequestMapping(value = "JSONData", method= RequestMethod.POST)
     @ResponseBody
     public JSONObject getJSONData(@RequestParam(value = "excelFile",required = false) String excelFile) throws IOException {
-        return dataLoaderService.getJSONData(excelFile);
+        return dataLoaderService.getJsonData(excelFile);
     }
     @ApiOperation(value = "获取实体对象", notes="解析实体对象信息")
     @RequestMapping(value = "beanList", method= RequestMethod.POST)

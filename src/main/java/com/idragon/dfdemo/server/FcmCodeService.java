@@ -1,6 +1,6 @@
 package com.idragon.dfdemo.server;
 
-import com.idragon.dfdemo.configure.FcmFileCongiure;
+import com.idragon.dfdemo.configure.FcmFileConfigure;
 import com.idragon.dfdemo.constant.ServerCodeType;
 import com.idragon.dfdemo.util.StringUtils;
 import com.idragon.dfdemo.util.fcm.BeanParseUtils;
@@ -26,7 +26,7 @@ public class FcmCodeService {
     @Autowired
     Configuration configuration;
     @Autowired
-    FcmFileCongiure fcmFileCongiure;
+    FcmFileConfigure fcmFileConfigure;
     @Autowired
     FcmBeanCodeService fcmBeanCodeService;
     @Autowired

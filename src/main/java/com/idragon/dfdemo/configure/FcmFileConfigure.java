@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @ConfigurationProperties(prefix = "fcmFile")
-public class FcmFileCongiure {
+public class FcmFileConfigure {
     String fileBasePath;
     String excelDefaultName;
     String beansDir;

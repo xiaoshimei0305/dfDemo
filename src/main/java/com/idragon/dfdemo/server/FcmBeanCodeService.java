@@ -1,6 +1,6 @@
 package com.idragon.dfdemo.server;
 
-import com.idragon.dfdemo.configure.FcmFileCongiure;
+import com.idragon.dfdemo.configure.FcmFileConfigure;
 import com.idragon.dfdemo.constant.FcmCodeConstants;
 import com.idragon.dfdemo.util.FileUtils;
 import com.idragon.dfdemo.util.fcm.BeanParseUtils;
@@ -23,7 +23,7 @@ public class FcmBeanCodeService {
     @Autowired
     Configuration configuration;
     @Autowired
-    FcmFileCongiure fcmFileCongiure;
+    FcmFileConfigure fcmFileConfigure;
 
     /**
      * 创建指定Bean代码
@@ -71,7 +71,7 @@ public class FcmBeanCodeService {
      * @return
      */
     public String getBeanFileDir(BeanInfo beanInfo){
-        return fcmFileCongiure.getCodeBasePath()+File.separator+ CodeLocationParseUtils.getModelLocation(beanInfo.getModelName())
+        return fcmFileConfigure.getCodeBasePath()+File.separator+ CodeLocationParseUtils.getModelLocation(beanInfo.getModelName())
                 +File.separator+beanInfo.getPackageName().replaceAll("\\.",File.separator);
     }
 

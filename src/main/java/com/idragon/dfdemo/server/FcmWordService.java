@@ -1,6 +1,6 @@
 package com.idragon.dfdemo.server;
 
-import com.idragon.dfdemo.configure.FcmFileCongiure;
+import com.idragon.dfdemo.configure.FcmFileConfigure;
 import com.idragon.dfdemo.util.WordUtils;
 import com.idragon.dfdemo.util.fcm.BeanParseUtils;
 import com.idragon.dfdemo.util.fcm.FcmWordUtils;
@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 public class FcmWordService {
     @Autowired
-    FcmFileCongiure fcmFileCongiure;
+    FcmFileConfigure fcmFileConfigure;
     @Autowired
     DataLoaderService dataLoaderService;
 
@@ -30,7 +30,7 @@ public class FcmWordService {
      * @throws Exception
      */
     public void buildBeansWordFile(String excelFileName,String beanDir) throws Exception {
-        String targetDir=fcmFileCongiure.getFileBasePath()+fcmFileCongiure.getBeansDir(beanDir)+"/";
+        String targetDir= fcmFileConfigure.getFileBasePath()+ fcmFileConfigure.getBeansDir(beanDir)+"/";
         WordUtils utils=new WordUtils();
         List<BeanInfo> beanInfos = dataLoaderService.getBeanList(excelFileName);
         BeanParseUtils beanParseUtils =new BeanParseUtils(beanInfos);
@@ -50,10 +50,10 @@ public class FcmWordService {
      */
     public void buildWorFile(String excelFileName,String modelFileName,String resultFileName) throws Exception {
         FcmWordUtils utils=new FcmWordUtils();
-        String workPath=fcmFileCongiure.getFileBasePath();
-        String targetFilesName = workPath+fcmFileCongiure.getResultFileName(resultFileName);
-        String modelFilesName = workPath+fcmFileCongiure.getModelFileName(modelFileName);
-        String dataSourceFileName = workPath+fcmFileCongiure.getExcelDefaultName(excelFileName);
+        String workPath= fcmFileConfigure.getFileBasePath();
+        String targetFilesName = workPath+ fcmFileConfigure.getResultFileName(resultFileName);
+        String modelFilesName = workPath+ fcmFileConfigure.getModelFileName(modelFileName);
+        String dataSourceFileName = workPath+ fcmFileConfigure.getExcelDefaultName(excelFileName);
         utils.buildWordDocument(targetFilesName, modelFilesName, dataSourceFileName);
     }
 

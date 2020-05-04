@@ -1,7 +1,7 @@
 package com.idragon.dfdemo.server;
 
 import com.alibaba.fastjson.JSONObject;
-import com.idragon.dfdemo.configure.FcmFileCongiure;
+import com.idragon.dfdemo.configure.FcmFileConfigure;
 import com.idragon.dfdemo.util.ExcelUtils;
 import com.idragon.dfdemo.util.fcm.BeanParseUtils;
 import com.idragon.dfdemo.util.fcm.FcmDataUtils;
@@ -20,44 +20,47 @@ import java.util.List;
  */
 @Service
 public class DataLoaderService {
-    @Autowired
-    FcmFileCongiure fcmFileCongiure;
+    /**
+     * 文件配置功能
+     */
+    FcmFileConfigure fcmFileConfigure;
+
 
     /**
      * 获取excel数据对象
      * @param excelFile excel文件
-     * @return
-     * @throws IOException
+     * @return JSON格式数据
+     * @throws IOException 网络异常
      */
-    public JSONObject getJSONData(String excelFile) throws IOException {
-        return ExcelUtils.getExcelData(fcmFileCongiure.getFileBasePath()+fcmFileCongiure.getExcelDefaultName(excelFile));
+    public JSONObject getJsonData(String excelFile) throws IOException {
+        return ExcelUtils.getExcelData(fcmFileConfigure.getFileBasePath()+ fcmFileConfigure.getExcelDefaultName(excelFile));
     }
 
     /**
      * 获取实体列表
      * @param excelFile excel文件
-     * @return
-     * @throws IOException
+     * @return 实体列表
+     * @throws IOException 网络异常
      */
     public List<BeanInfo> getBeanList(String excelFile) throws IOException {
-        return FcmDataUtils.getBeanInfos(getJSONData(excelFile));
+        return FcmDataUtils.getBeanInfos(getJsonData(excelFile));
     }
 
     /**
      * 获取接口列表
      * @param excelFile excel文件
-     * @return
-     * @throws IOException
+     * @return 接口列表
+     * @throws IOException 网络异常
      */
     public List<InterfaceInfo> getInterfaceList(String excelFile) throws IOException {
-        return FcmDataUtils.getInterfaceInfos(getJSONData(excelFile));
+        return FcmDataUtils.getInterfaceInfos(getJsonData(excelFile));
     }
 
     /**
      * 获取实体解析对象
      * @param excelFile excel文件
-     * @return
-     * @throws IOException
+     * @return 实体解析器
+     * @throws IOException 网络异常
      */
     public BeanParseUtils getBeanParseUtils(String excelFile) throws IOException {
         List<BeanInfo>  beanInfos= getBeanList(excelFile);
@@ -66,10 +69,10 @@ public class DataLoaderService {
 
     public ServerParseUtils getServerParseUtils(String excelFile) throws IOException {
         List<InterfaceInfo> list=getInterfaceList(excelFile);
-        ServerParseUtils utils=new ServerParseUtils(list);
-        return utils;
+        return new ServerParseUtils(list);
     }
-
-
-
+    @Autowired
+    public void setFcmFileConfigure(FcmFileConfigure fcmFileConfigure) {
+        this.fcmFileConfigure = fcmFileConfigure;
+    }
 }
