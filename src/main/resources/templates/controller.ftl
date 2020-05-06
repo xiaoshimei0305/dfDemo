@@ -12,7 +12,7 @@ import ${item};
 ${(unChangedCode.personImport)!}
 //CodeEnd
 /**
-* @author
+* @author ${author}
 */
 @ApiOperation("${name}")
 @RestController

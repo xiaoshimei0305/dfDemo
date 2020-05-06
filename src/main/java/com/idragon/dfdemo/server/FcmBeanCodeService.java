@@ -33,6 +33,7 @@ public class FcmBeanCodeService {
         if(beanInfo!=null&&!checkBeanFile(beanInfo)){
             //解析相关依赖包
             beanInfo.initImportPackageList(utils);
+            beanInfo.setAuthor(fcmFileConfigure.getAuthor());
             FileUtils.initDir(getBeanFileDir(beanInfo));
             Template temp = configuration.getTemplate(FcmCodeConstants.BEAN_CODE_MODEL_COMOND);
             Writer out = new OutputStreamWriter(new FileOutputStream(getBeanFile(beanInfo)));

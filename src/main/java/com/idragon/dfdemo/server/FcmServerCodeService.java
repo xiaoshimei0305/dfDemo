@@ -18,6 +18,7 @@ import java.util.List;
 
 /**
  * 控制层相关代码生成工具
+ * @author chenxinjun
  */
 @Service
 public class FcmServerCodeService {
@@ -56,6 +57,7 @@ public class FcmServerCodeService {
         if(serviceInfo!=null&&!checkServerFile(serviceInfo,type)){
             //解析相关依赖实体路径
             serviceInfo.initImportPackageList(utils);
+            serviceInfo.setAuthor(fcmFileConfigure.getAuthor());
             FileUtils.initDir(getServerFileDir(serviceInfo,type));
             Template temp = configuration.getTemplate(type.getTemplateName());
             Writer out = new OutputStreamWriter(new FileOutputStream(getServerFile(serviceInfo,type)));

@@ -24,6 +24,7 @@ public class ServiceInfo {
     private String modelName;
     private String classPath;;
     private String modelCode;
+    private String author;
     /**
      * 实体关联的包列表
      */

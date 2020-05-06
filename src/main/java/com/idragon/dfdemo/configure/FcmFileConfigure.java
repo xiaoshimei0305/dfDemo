@@ -20,6 +20,7 @@ public class FcmFileConfigure {
     String codeBasePath;
     String entitySheetName;
     String interfaceSheetName;
+    String author;
     public String getExcelDefaultName(String excelFileName) {
         if(!StringUtils.isBlank(excelFileName)){
             return excelFileName;

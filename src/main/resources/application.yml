@@ -10,6 +10,7 @@ fcmFile:
   codeBasePath: /Users/chenxinjun/work/code/ocj/fcm/
   entitySheetName: 实体表-王鹏
   interfaceSheetName: 接口列表-王鹏
+  author: 王鹏
 #  excelDefaultName:
   beansDir: beans
 #  modelFileName: model.docx

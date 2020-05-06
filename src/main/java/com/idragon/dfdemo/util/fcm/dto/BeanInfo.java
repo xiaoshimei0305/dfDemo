@@ -23,6 +23,7 @@ public class BeanInfo {
     private String remark;
     private EntityTypeEnum type;
     private String packageName;
+    private String author;
     private List<BeanFieldInfo> fieldList;
     /**
      * 实体关联的包列表

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 ${(unChangedCode.personImport)!}
 //CodeEnd
 /**
-* @author:tanhh
+* @author:${author}
 * @description:${name}
 * @create: 2020-04-11 10:48
 **/

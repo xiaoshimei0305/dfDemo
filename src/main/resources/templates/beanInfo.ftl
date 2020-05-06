@@ -11,7 +11,7 @@ ${(unChangedCode.personImport)!}
 //CodeEnd
 /**
 * ${remark}
-* @author chenxinjun
+* @author ${author}
 */
 @ApiModel(description = "${name}")
 @Data

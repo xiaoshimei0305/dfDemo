@@ -13,7 +13,7 @@ ${(unChangedCode.personImport)!}
 //CodeEnd
 /**
 * @description: ${name}
-* @author: liudazhuang
+* @author: ${author}
 * @create: 2019-07-31 17:09
 **/
 @Component
