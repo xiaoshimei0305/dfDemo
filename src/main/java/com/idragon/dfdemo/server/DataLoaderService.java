@@ -43,7 +43,7 @@ public class DataLoaderService {
      * @throws IOException 网络异常
      */
     public List<BeanInfo> getBeanList(String excelFile) throws IOException {
-        return FcmDataUtils.getBeanInfos(getJsonData(excelFile));
+        return FcmDataUtils.getBeanInfos(getJsonData(excelFile),fcmFileConfigure.getEntitySheetName());
     }
 
     /**
@@ -53,7 +53,7 @@ public class DataLoaderService {
      * @throws IOException 网络异常
      */
     public List<InterfaceInfo> getInterfaceList(String excelFile) throws IOException {
-        return FcmDataUtils.getInterfaceInfos(getJsonData(excelFile));
+        return FcmDataUtils.getInterfaceInfos(getJsonData(excelFile),fcmFileConfigure.getInterfaceSheetName());
     }
 
     /**

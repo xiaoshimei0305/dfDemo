@@ -49,12 +49,8 @@ public class FcmWordService {
      * @throws Exception
      */
     public void buildWorFile(String excelFileName,String modelFileName,String resultFileName) throws Exception {
-        FcmWordUtils utils=new FcmWordUtils();
-        String workPath= fcmFileConfigure.getFileBasePath();
-        String targetFilesName = workPath+ fcmFileConfigure.getResultFileName(resultFileName);
-        String modelFilesName = workPath+ fcmFileConfigure.getModelFileName(modelFileName);
-        String dataSourceFileName = workPath+ fcmFileConfigure.getExcelDefaultName(excelFileName);
-        utils.buildWordDocument(targetFilesName, modelFilesName, dataSourceFileName);
+        FcmWordUtils utils=new FcmWordUtils(fcmFileConfigure);
+        utils.buildWordDocument(excelFileName, modelFileName, resultFileName);
     }
 
 }

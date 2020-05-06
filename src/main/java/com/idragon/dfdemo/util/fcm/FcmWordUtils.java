@@ -1,6 +1,7 @@
 package com.idragon.dfdemo.util.fcm;
 
 import com.alibaba.fastjson.JSONObject;
+import com.idragon.dfdemo.configure.FcmFileConfigure;
 import com.idragon.dfdemo.util.ExcelUtils;
 import com.idragon.dfdemo.util.WordUtils;
 import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
@@ -16,37 +17,36 @@ import java.util.List;
  * FCM word文档生产工具
  */
 public class FcmWordUtils {
-    public FcmWordUtils() {
+    FcmFileConfigure fcmFileConfigure;
+
+    public FcmWordUtils(FcmFileConfigure fcmFileConfigure) {
+        this.fcmFileConfigure=fcmFileConfigure;
     }
 
     /**
      * word文档生成工具
-     * @param targetFilesName  生成目标文件
-     * @param modelFileName  生成模版文件
-     * @param dataSourceFileName  数据来源excel文件
+     * @param excelFileName
+     * @param modelFileName
+     * @param resultFileName
+     * @throws Exception
      */
-    public void buildWordDocument(String targetFilesName,String modelFileName,String dataSourceFileName) throws Exception {
+    public void buildWordDocument(String excelFileName,String modelFileName,String resultFileName) throws Exception {
+        String workPath= fcmFileConfigure.getFileBasePath();
+        String targetFilesName = workPath+ fcmFileConfigure.getResultFileName(resultFileName);
+        String modelFilesName = workPath+ fcmFileConfigure.getModelFileName(modelFileName);
+        String dataSourceFileName = workPath+ fcmFileConfigure.getExcelDefaultName(excelFileName);
         JSONObject data= ExcelUtils.getExcelData(dataSourceFileName);
         // 处理实体信息
-        List<BeanInfo> beanList = FcmDataUtils.getBeanInfos(data);
+        List<BeanInfo> beanList = FcmDataUtils.getBeanInfos(data,fcmFileConfigure.getEntitySheetName());
         BeanParseUtils beanParseUtils =new BeanParseUtils(beanList);
         WordUtils utils=new WordUtils();
-        List<InterfaceInfo> interfaceBeanInfos = FcmDataUtils.getInterfaceInfos(data);
+        List<InterfaceInfo> interfaceBeanInfos = FcmDataUtils.getInterfaceInfos(data,fcmFileConfigure.getInterfaceSheetName());
         //接口参数初始化
         InterfaceInfoWordUtils interfaceInfoWordUtils=new InterfaceInfoWordUtils();
-        XWPFDocument contentDoc = utils.getDocument(modelFileName);
+        XWPFDocument contentDoc = utils.getDocument(modelFilesName);
         contentDoc= interfaceInfoWordUtils.importDocumentByMethods(contentDoc,interfaceBeanInfos, beanParseUtils);
         //完成文档内容，生成地址
         utils.exportFile(contentDoc,targetFilesName);
     }
 
-
-    public static void main(String[] args) throws Exception {
-        FcmWordUtils utils=new FcmWordUtils();
-        String docx1 = "/Users/rocking/Downloads/hh1.docx";
-        // String docx2 = "/Users/rocking/Desktop/亚信2020.1.1/上海东方购项目/交易/购物车/购物车详设(初版).docx";
-        String docx2 = "/Users/rocking/Downloads/购物车详设(初版).docx";
-        String xlsx1 = "/Users/rocking/Downloads/930详设接口记录.xlsx";
-        utils.buildWordDocument(docx1, docx2, xlsx1);
-    }
 }

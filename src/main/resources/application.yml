@@ -8,6 +8,8 @@ fcmFile:
   fileBasePath: /Users/chenxinjun/Downloads/fcmWord/
   ##FCM项目路径
   codeBasePath: /Users/chenxinjun/work/code/ocj/fcm/
+  entitySheetName: 接口列表-王鹏
+  interfaceSheetName: 接口列表-王鹏
 #  excelDefaultName:
   beansDir: beans
 #  modelFileName: model.docx

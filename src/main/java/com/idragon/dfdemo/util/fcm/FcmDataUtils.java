@@ -15,27 +15,16 @@ import java.util.Map;
  */
 public class FcmDataUtils {
 
-
-    /**
-     *  获取服务列表
-     * @param sheetInfo
-     * @return
-     */
-    public static ServerParseUtils getServiceInfos(JSONObject sheetInfo){
-        List<InterfaceInfo> interfaceInfos=getInterfaceInfos(sheetInfo);
-        ServerParseUtils utils=new ServerParseUtils(interfaceInfos);
-        return utils;
-    }
     /**
      * 获取接口信息
      *
      * @param sheetInfo
      * @return
      */
-    public static List<InterfaceInfo> getInterfaceInfos(JSONObject sheetInfo) {
+    public static List<InterfaceInfo> getInterfaceInfos(JSONObject sheetInfo,String sheetName) {
         List<InterfaceInfo> interfaceInfos = new ArrayList<>();
         if (sheetInfo != null) {
-            JSONArray ja = sheetInfo.getJSONArray("接口列表");
+            JSONArray ja = sheetInfo.getJSONArray(sheetName);
             if (ja != null) {
                 for (int i = 0; i < ja.size(); i++) {
                     JSONObject item = ja.getJSONObject(i);
@@ -67,10 +56,10 @@ public class FcmDataUtils {
      * @param sheetInfo
      * @return
      */
-    public static List<BeanInfo> getBeanInfos(JSONObject sheetInfo) {
+    public static List<BeanInfo> getBeanInfos(JSONObject sheetInfo,String sheetName) {
         List<BeanInfo> beanList = new ArrayList();
         if (sheetInfo != null) {
-            JSONArray ja = sheetInfo.getJSONArray("实体表");
+            JSONArray ja = sheetInfo.getJSONArray(sheetName);
             if (ja != null && ja.size() > 0) {
                 int length = ja.size();
                 for (int i = 0; i < length; i++) {
