@@ -6,10 +6,6 @@ package com.idragon.dfdemo.constant;
  */
 public class FcmCodeConstants {
     /**
-     * 请求类型实体模版(修改数据)
-     */
-    public static String BEAN_CODE_MODEL_COMOND="beanInfo.ftl";
-    /**
      * 定位子项目位置，替换idrModel 即可
      */
     public static String MODEL_LOCATION_MODEL="api/api-idrModel/src/main/java";

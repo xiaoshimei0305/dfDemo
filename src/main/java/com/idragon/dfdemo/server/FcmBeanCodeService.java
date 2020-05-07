@@ -6,6 +6,7 @@ import com.idragon.dfdemo.util.FileUtils;
 import com.idragon.dfdemo.util.fcm.BeanParseUtils;
 import com.idragon.dfdemo.util.fcm.code.CodeLocationParseUtils;
 import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
+import com.idragon.dfdemo.util.fcm.dto.EntityTypeEnum;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -35,9 +36,20 @@ public class FcmBeanCodeService {
             beanInfo.initImportPackageList(utils);
             beanInfo.setAuthor(fcmFileConfigure.getAuthor());
             FileUtils.initDir(getBeanFileDir(beanInfo));
-            Template temp = configuration.getTemplate(FcmCodeConstants.BEAN_CODE_MODEL_COMOND);
+            Template temp = configuration.getTemplate(beanInfo.getType().getTemplateName());
             Writer out = new OutputStreamWriter(new FileOutputStream(getBeanFile(beanInfo)));
             temp.process(beanInfo, out);
+            switch (beanInfo.getType()){
+                case QUERY:
+                    // 普通查询添加一个对应的Rest接口
+                    beanInfo.setType(EntityTypeEnum.RESTQUERY);
+                    buildBeanInfo(beanInfo,utils);
+                    break;
+                default:
+                    break;
+            }
+
+
         }
     }
 
@@ -63,7 +75,7 @@ public class FcmBeanCodeService {
      * @return
      */
     public File getBeanFile(BeanInfo beanInfo){
-        return new File(getBeanFileDir(beanInfo)+File.separator+beanInfo.getCode()+".java");
+        return new File(getBeanFileDir(beanInfo)+File.separator+beanInfo.getCode()+beanInfo.getType().getSuffixName()+".java");
     }
 
     /**
