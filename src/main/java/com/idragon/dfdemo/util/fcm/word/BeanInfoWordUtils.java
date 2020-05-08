@@ -143,10 +143,12 @@ public class BeanInfoWordUtils {
                 XWPFTableRow row = table.getRow(i + startIndex+1);
                 row.getCell(0).setText(info.getName());
                 row.getCell(1).setText(info.getCode());
-                row.getCell(2).setText(info.getType());
-                row.getCell(3).setText(info.getNameLength());
-                row.getCell(4).setText(info.isRequire()?"是":"否");
-                row.getCell(5).setText(info.getRemark());
+                row.getCell(2).setText(info.getApiCode());
+                row.getCell(3).setText(info.getType());
+                row.getCell(4).setText(info.getNameLength());
+                row.getCell(5).setText(info.isRequire()?"是":"否");
+                row.getCell(6).setText(info.isApiRequire()?"是":"否");
+                row.getCell(7).setText(info.getRemark());
             }
         }
     }

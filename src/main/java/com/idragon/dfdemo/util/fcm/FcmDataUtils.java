@@ -42,6 +42,8 @@ public class FcmDataUtils {
                         interfaceInfo.setOutName(item.getString("出参名称"));
                         interfaceInfo.setRemark(item.getString("备注"));
                         interfaceInfo.setMethodPath(item.getString("方法路径"));
+                        interfaceInfo.setRest(!"否".equalsIgnoreCase(item.getString("REST")));
+                        interfaceInfo.setApi(!"否".equalsIgnoreCase(item.getString("API")));
                         interfaceInfos.add(interfaceInfo);
                     }
                 }
@@ -116,11 +118,13 @@ public class FcmDataUtils {
         if(beanInfo!=null&&item!=null){
             BeanFieldInfo field = new BeanFieldInfo();
             field.setCode(item.getString("字段编码"));
+            field.setApiCode(item.getString("API编码"));
             field.setName(item.getString("字段名称"));
             field.setRemark(item.getString("备注"));
-            field.setRequire("是".equalsIgnoreCase(item.getString("是否必填")));
+            field.setRequire(!"否".equalsIgnoreCase(item.getString("是否必填")));
             field.setType(item.getString("字段类型"));
             field.setNameLength(item.getString("长度"));
+            field.setApiRequire(!"否".equalsIgnoreCase(item.getString("API是否必填")));
             if(!StringUtils.isBlank(field.getCode())){
                 beanInfo.getFieldList().add(field);
             }

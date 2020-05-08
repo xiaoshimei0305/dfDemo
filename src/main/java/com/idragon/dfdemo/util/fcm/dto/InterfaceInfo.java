@@ -64,6 +64,16 @@ public class InterfaceInfo{
      * Rest 方法路径
      */
     private String methodPath;
+    /**
+     * 是否需要rest接口
+     */
+    private boolean rest;
+    /**
+     * 是否需要api接口
+     */
+    private boolean api;
+
+
 
     public void setInName(String inName) {
         this.inName = inName;
