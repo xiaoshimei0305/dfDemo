@@ -121,7 +121,7 @@ public class FcmDataUtils {
             field.setApiCode(item.getString("API编码"));
             field.setName(item.getString("字段名称"));
             field.setRemark(item.getString("备注"));
-            field.setRequire(!"否".equalsIgnoreCase(item.getString("是否必填")));
+            field.setRequire(!"否".equalsIgnoreCase(item.getString("REST是否必填")));
             field.setType(item.getString("字段类型"));
             field.setNameLength(item.getString("长度"));
             field.setApiRequire(!"否".equalsIgnoreCase(item.getString("API是否必填")));
