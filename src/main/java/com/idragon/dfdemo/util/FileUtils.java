@@ -2,10 +2,7 @@ package com.idragon.dfdemo.util;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * 文件工具
@@ -51,6 +48,22 @@ public class FileUtils {
     }
 
     /**
+     * 写内容到文本文件当中
+     * @param file
+     * @param contentß
+     */
+    public static  void wiriteFileContent(File file,String content) throws IOException {
+        FileOutputStream fileOutputStream = null;
+        if(!file.exists()){
+            file.createNewFile();
+        }
+        fileOutputStream = new FileOutputStream(file);
+        fileOutputStream.write(content.getBytes("utf-8"));
+        fileOutputStream.flush();
+        fileOutputStream.close();
+    }
+
+    /**
      * 读取文件内容
      * @param file
      * @return
@@ -62,7 +75,7 @@ public class FileUtils {
             reader = new BufferedReader(new FileReader(file));
             String tempStr;
             while ((tempStr = reader.readLine()) != null) {
-                sbf.append(tempStr);
+                sbf.append(tempStr).append("\n");
             }
             reader.close();
             return sbf.toString();

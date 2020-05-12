@@ -15,3 +15,6 @@ fcmFile:
   beansDir: beans
 #  modelFileName: model.docx
 #  resultFileName: result.docx
+logging:
+  level:
+    root: info
