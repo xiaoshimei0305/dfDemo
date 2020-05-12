@@ -26,7 +26,7 @@ public class ${code}${type.suffixName} extends AbstractQueryRestRequest {
     @ApiModelProperty(value = "${field.name}", required = ${field.require?string('true','false')})
     private ${field.type} ${field.code};
 </#list>
-@Override
+    @Override
     public void checkInput() {
         super.checkInput();
         <#list fieldList as field>
