@@ -72,6 +72,10 @@ public class InterfaceInfo{
      * 是否需要api接口
      */
     private boolean api;
+    /**
+     * 标记是否为查询请求
+     */
+    private boolean queryReq;
 
 
 
@@ -97,4 +101,10 @@ public class InterfaceInfo{
         return StringUtils.getValue(methodPath,methodName);
     }
 
+    public String getRemark() {
+        if(!StringUtils.isBlank(name)){
+            remark=remark.replaceAll("\n"," ");
+        }
+        return remark;
+    }
 }

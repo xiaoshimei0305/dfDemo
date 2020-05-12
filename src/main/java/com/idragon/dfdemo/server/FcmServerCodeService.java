@@ -56,7 +56,7 @@ public class FcmServerCodeService {
     public void buildServer(ServiceInfo serviceInfo, BeanParseUtils utils,ServerCodeType type) throws IOException, TemplateException {
         if(serviceInfo!=null&&!checkServerFile(serviceInfo,type)){
             //解析相关依赖实体路径
-            serviceInfo.initImportPackageList(utils);
+            serviceInfo.initImportPackageList(utils,type);
             serviceInfo.setAuthor(fcmFileConfigure.getAuthor());
             FileUtils.initDir(getServerFileDir(serviceInfo,type));
             Template temp = configuration.getTemplate(type.getTemplateName());

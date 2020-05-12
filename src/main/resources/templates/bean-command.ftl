@@ -3,6 +3,9 @@ package ${packageName};
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import java.util.List;
+import cn.com.ocj.giant.framework.api.rest.dto.AbstractQueryRestRequest;
+import cn.com.ocj.giant.framework.api.util.ParamUtil;
 <#list importPackageList as item>
 import ${item};
 </#list>
@@ -15,7 +18,7 @@ ${(unChangedCode.personImport)!}
 */
 @ApiModel(description = "${name}")
 @Data
-public class ${code}{
+public class ${code}${type.suffixName} extends AbstractQueryRestRequest {
     //[Autowired]CodeStart
     ${(unChangedCode.Autowired)!}
     //CodeEnd
@@ -23,4 +26,13 @@ public class ${code}{
     @ApiModelProperty(value = "${field.name}", required = ${field.require?string('true','false')})
     private ${field.type} ${field.code};
 </#list>
+@Override
+    public void checkInput() {
+        super.checkInput();
+        <#list fieldList as field>
+            <#if field.require>
+        ParamUtil.nonNull(${field.code}, "${field.name}不能为空");
+            </#if>
+        </#list>
+    }
 }

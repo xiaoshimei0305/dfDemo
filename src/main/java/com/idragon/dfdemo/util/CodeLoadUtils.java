@@ -33,8 +33,11 @@ public class CodeLoadUtils {
             if(!StringUtils.isBlank(content)){
                 Matcher m = pattern.matcher(content);
                 while(m.find()){
-                    contents.put(m.group(1),m.group(2));
-                    System.out.println("hah:"+m.group(1)+",name:"+m.group(2));
+                    String value=m.group(2);
+                    if(StringUtils.isBlank(value)){
+                        value="";
+                    }
+                    contents.put(m.group(1),value);
                 }
             }
         }

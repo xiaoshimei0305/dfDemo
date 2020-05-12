@@ -3,7 +3,9 @@ package cn.com.ocj.giant.platform.newmedia.api.${modelCode}.server.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 <#list importPackageList as item>
-    import ${item};
+    <#if item?default("")?trim?length gt 1>
+import ${item};
+    </#if>
 </#list>
 //[personImport]CodeStart
 ${(unChangedCode.personImport)!}
@@ -28,6 +30,9 @@ public class ${code?cap_first}Service{
     * @return ${method.outName}
     */
     public ${method.outType?cap_first} ${method.methodName?uncap_first}(${method.inType?cap_first} ${method.inType?uncap_first}) {
+        //[${method.methodName}]CodeStart
+            ${(utils(unChangedCode,method.methodName))!}
+        //CodeEnd
         return null;
     }
 </#list>

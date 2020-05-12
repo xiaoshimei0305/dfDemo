@@ -2,7 +2,11 @@ package com.idragon.dfdemo.util.fcm.code;
 
 import com.idragon.dfdemo.constant.FcmCodeConstants;
 import com.idragon.dfdemo.constant.ServerCodeType;
+import com.idragon.dfdemo.util.StringUtils;
 import com.idragon.dfdemo.util.fcm.dto.EntityTypeEnum;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 代码位置解析工具柜
@@ -10,11 +14,31 @@ import com.idragon.dfdemo.util.fcm.dto.EntityTypeEnum;
  */
 public class CodeLocationParseUtils {
 
+    private static Map<String,String> mapperCache;
     /**
-     * 获取控制层包路径
-     * @param modeName
-     * @return
+     * 模型名称与编码转换工作
      */
+    public static String getModelCode(String modelName){
+       String name= getMapper().get(modelName);
+       if(StringUtils.isBlank(name)){
+            name="cms";
+        }
+        return name;
+    }
+
+    private static Map<String,String> getMapper(){
+        if(mapperCache == null){
+            mapperCache=new HashMap<>();
+            mapperCache.put("购物车","trade");
+            mapperCache.put("订购流程","trade");
+            mapperCache.put("订单中心","trade");
+            mapperCache.put("逆向交易","trade");
+            mapperCache.put("注册登录","member");
+        }
+        return mapperCache;
+    }
+
+
     public static String getControllerPackageName(String modelName,ServerCodeType type){
         return getModelPackage(modelName)+type.getPackageName();
     }
@@ -62,16 +86,6 @@ public class CodeLocationParseUtils {
         return FcmCodeConstants.MODEL_LOCATION_MODEL.replace("idrModel",getModelCode(modelName));
     }
 
-    /**
-     * 模型名称与编码转换工作
-     */
-    public static String getModelCode(String modelName){
-        if("购物车".equalsIgnoreCase(modelName)||"订购流程".equalsIgnoreCase(modelName)||"订单中心".equalsIgnoreCase(modelName)){
-            return "trade";
-        }else if("注册登录".equalsIgnoreCase(modelName)){
-            return "member";
-        }
-        return "cms";
-    }
+
 
 }

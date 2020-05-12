@@ -6,7 +6,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 <#list importPackageList as item>
+    <#if item?default("")?trim?length gt 1>
 import ${item};
+    </#if>
 </#list>
 //[personImport]CodeStart
 ${(unChangedCode.personImport)!}

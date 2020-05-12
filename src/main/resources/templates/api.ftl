@@ -6,7 +6,9 @@ import org.springframework.stereotype.Component;
 import cn.com.ocj.giant.framework.server.exception.AdaptorFailureException;
 import cn.com.ocj.giant.framework.server.exception.GiantException;
 <#list importPackageList as item>
+        <#if item?default("")?trim?length gt 1>
 import ${item};
+        </#if>
 </#list>
 //[personImport]CodeStart
 ${(unChangedCode.personImport)!}
@@ -33,6 +35,9 @@ public class ${code}Api{
         */
         @HystrixCommand(ignoreExceptions = {GiantException.class, AdaptorFailureException.class})
         public ${method.outType?cap_first} ${method.methodName?uncap_first}(${method.inType?cap_first} ${method.inType?uncap_first}) {
+                //[${method.methodName}]CodeStart
+                        ${(utils(unChangedCode,method.methodName))!}
+                //CodeEnd
             return null;
         }
 </#list>

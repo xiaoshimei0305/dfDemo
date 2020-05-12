@@ -30,4 +30,8 @@ public class BeanFieldInfo {
     public String getApiCode() {
         return StringUtils.isBlank(apiCode)?code:apiCode;
     }
+
+    public String getType() {
+        return StringUtils.isBlank(type)?"String":type;
+    }
 }

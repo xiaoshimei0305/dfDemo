@@ -1,5 +1,6 @@
 package com.idragon.dfdemo.util.fcm.dto;
 
+import com.idragon.dfdemo.constant.ServerCodeType;
 import com.idragon.dfdemo.util.CodeLoadUtils;
 import com.idragon.dfdemo.util.StringUtils;
 import com.idragon.dfdemo.util.fcm.BeanParseUtils;
@@ -63,8 +64,9 @@ public class ServiceInfo {
     /**
      * 对方法内说有的参数进行
      * @param utils
+     * @param type
      */
-    public  void initImportPackageList(BeanParseUtils utils){
+    public  void initImportPackageList(BeanParseUtils utils, ServerCodeType type){
         importPackageList=new ArrayList<>();
         if(utils!=null){
             if(methods!=null&&methods.size()>0){
@@ -72,6 +74,26 @@ public class ServiceInfo {
                     InterfaceInfo info=methods.get(i);
                     String inPath=getImportPath(info.getInType(),utils);
                     if(!StringUtils.isBlank(inPath)){
+                        BeanInfo inBean=utils.getBeanInfo(info.getInType());
+                        switch (inBean.getType()){
+                            case QUERY:
+                                info.setQueryReq(true);
+                                break;
+                            default:
+                                info.setQueryReq(false);
+                        }
+                        if(info.isQueryReq()){
+                            switch (type){
+                                case CONTROLLER:
+                                    inPath+="RestQuery";
+                                    info.setInType(info.getInType()+"RestQuery");
+                                    break;
+                                default:
+                                    inPath+="Query";
+                                    info.setInType(info.getInType()+"Query");
+                            }
+
+                        }
                         importPackageList.add(inPath);
                     }
                     String outPath=getImportPath(info.getOutType(),utils);

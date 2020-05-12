@@ -3,6 +3,7 @@ package ${packageName};
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import java.util.List;
 <#list importPackageList as item>
 import ${item};
 </#list>
@@ -15,7 +16,7 @@ ${(unChangedCode.personImport)!}
 */
 @ApiModel(description = "${name}")
 @Data
-public class ${code}${type.suffixName}{
+public class ${code}${type.suffixName} {
     //[Autowired]CodeStart
     ${(unChangedCode.Autowired)!}
     //CodeEnd
