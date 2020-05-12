@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import java.util.List;
+import java.util.Date;
+import java.util.Map;
 <#list importPackageList as item>
 import ${item};
 </#list>

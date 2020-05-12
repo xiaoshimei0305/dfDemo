@@ -16,7 +16,7 @@ ${(unChangedCode.personImport)!}
 /**
 * @description: ${name}
 * @author: ${author}
-* @create: 2019-07-31 17:09
+* @create:
 **/
 @Component
 @Slf4j
@@ -30,8 +30,8 @@ public class ${code}Api{
         * @Description: ${method.remark}
         * @Param: ${method.inType?uncap_first}: ${method.inName}
         * @return: ${method.outType?cap_first}: ${method.outName}
-        * @Author: 石权
-        * @Date: 2020/4/11
+        * @Author: ${author}
+        *
         */
         @HystrixCommand(ignoreExceptions = {GiantException.class, AdaptorFailureException.class})
         public ${method.outType?cap_first} ${method.methodName?uncap_first}(${method.inType?cap_first} ${method.inType?uncap_first}) {
