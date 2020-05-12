@@ -33,7 +33,7 @@ public class ServerParseUtils {
      * @param interfaceInfo
      */
     public void addInterface(InterfaceInfo interfaceInfo){
-        String name=interfaceInfo.getName();
+        String name=interfaceInfo.getClassName();
         ServiceInfo serviceInfo=serverInfoMap.get(name);
         if(serviceInfo==null){
             serviceInfo=new ServiceInfo();
