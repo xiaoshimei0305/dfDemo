@@ -5,6 +5,7 @@ import com.idragon.dfdemo.util.StringUtils;
 import com.idragon.dfdemo.util.fcm.BeanParseUtils;
 import com.idragon.dfdemo.util.fcm.code.CodeLocationParseUtils;
 import lombok.Data;
+import org.apache.tomcat.jni.FileInfo;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -70,6 +71,16 @@ public class BeanInfo {
                 }
             }
         }
+    }
+
+    public String getStr(){
+        StringBuffer sb=new StringBuffer("参数：");
+        if(this.fieldList!=null&&this.fieldList.size()>0){
+            for(BeanFieldInfo info:this.fieldList){
+                sb.append("|").append(info.getName());
+            }
+        }
+        return sb.toString();
     }
 
 

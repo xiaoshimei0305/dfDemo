@@ -5,9 +5,11 @@
 server:
   port: 8080
 fcmFile:
-  fileBasePath: /Users/rocking/Downloads/fcmWord/
+  ##fileBasePath: /Users/rocking/Downloads/fcmWord/
+  fileBasePath: /Users/chenxinjun/Downloads/fcmWord/
   ##FCM项目路径
-  codeBasePath: /Users/rocking/work/code/fcm/
+ ## codeBasePath: /Users/rocking/work/code/fcm/
+  codeBasePath: /Users/chenxinjun/work/code/ocj/fcm
   entitySheetName: 实体表-王鹏
   interfaceSheetName: 接口列表-王鹏
   author: wangpeng30

@@ -21,7 +21,15 @@ public class FcmCodeController {
     @Autowired
     FcmCodeService fcmCodeService;
 
-
+    @ApiOperation(value = "生成所有代码", notes="生成所有代码")
+    @RequestMapping(value = "buildAll", method= RequestMethod.POST)
+    @ResponseBody
+    public void buildAll(@RequestParam(value = "excelFile",required = false) String excelFile) throws IOException, TemplateException {
+        fcmCodeService.buildServiceCodeFile(excelFile, ServerCodeType.CONTROLLER);
+        fcmCodeService.buildServiceCodeFile(excelFile, ServerCodeType.SERVICE);
+        fcmCodeService.buildServiceCodeFile(excelFile, ServerCodeType.API);
+        fcmCodeService.buildBeanCodeFile(excelFile,null);
+    }
     @ApiOperation(value = "生成指定实体代码", notes="生成指定实体的代码文档")
     @RequestMapping(value = "buildBeanCodeFile", method= RequestMethod.POST)
     @ResponseBody

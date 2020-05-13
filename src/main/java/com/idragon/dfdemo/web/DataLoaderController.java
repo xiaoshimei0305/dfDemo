@@ -2,10 +2,13 @@ package com.idragon.dfdemo.web;
 
 import com.alibaba.fastjson.JSONObject;
 import com.idragon.dfdemo.server.DataLoaderService;
+import com.idragon.dfdemo.util.fcm.BeanParseUtils;
 import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
 import com.idragon.dfdemo.util.fcm.dto.InterfaceInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +22,7 @@ import java.util.List;
 @RequestMapping("/dataLoader")
 @Api("excel文件处理")
 @RestController
+@Slf4j
 public class DataLoaderController {
     @Autowired
     DataLoaderService dataLoaderService;
@@ -39,6 +43,22 @@ public class DataLoaderController {
     @RequestMapping(value = "InterfaceList", method= RequestMethod.POST)
     @ResponseBody
     public List<InterfaceInfo> getInterfaceList(@RequestParam(value = "excelFile",required = false) String excelFile) throws IOException {
-        return dataLoaderService.getInterfaceList(excelFile);
+        BeanParseUtils utils=new BeanParseUtils(getBeanList(excelFile));
+
+        List<InterfaceInfo>  list= dataLoaderService.getInterfaceList(excelFile);
+        for(InterfaceInfo item:list){
+            System.out.println(item.getName()+","+getConent(utils.getBeanInfo(item.getInType()))+","+getConent(utils.getBeanInfo(item.getOutType())));
+        }
+
+        return list;
     }
+
+    private String getConent(BeanInfo info){
+        String result="";
+        if(info!=null){
+            return info.getStr();
+        }
+        return result;
+    }
+
 }
