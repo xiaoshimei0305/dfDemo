@@ -3,9 +3,8 @@ package ${packageName};
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import java.util.List;
-import java.util.Date;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.util.*;
 import java.io.Serializable;
 <#list importPackageList as item>
 import ${item};
