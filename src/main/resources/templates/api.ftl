@@ -1,4 +1,4 @@
-package cn.com.ocj.giant.platform.newmedia.api.${modelCode}.server.adapater;
+package cn.com.ocj.giant.platform.newmedia.api.${modelCode}.server.adapter;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.extern.slf4j.Slf4j;
