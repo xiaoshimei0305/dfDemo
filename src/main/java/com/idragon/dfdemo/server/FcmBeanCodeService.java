@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.util.regex.Matcher;
 
 /**
  * dto 相关实体生成服务
@@ -82,9 +83,10 @@ public class FcmBeanCodeService {
      * @param beanInfo 实体信息
      * @return
      */
-    public String getBeanFileDir(BeanInfo beanInfo){
-        return fcmFileConfigure.getCodeBasePath()+File.separator+ CodeLocationParseUtils.getModelLocation(beanInfo.getModelName())
-                +File.separator+beanInfo.getPackageName().replaceAll("\\.",File.separator);
+    public String getBeanFileDir(BeanInfo beanInfo) {
+        String codeBasePath = fcmFileConfigure.getCodeBasePath();
+        String modelLocation = CodeLocationParseUtils.getModelLocation(beanInfo.getModelName());
+        String packageName = beanInfo.getPackageName().replaceAll("\\.", Matcher.quoteReplacement(File.separator));
+        return codeBasePath + File.separator + modelLocation + File.separator + packageName;
     }
-
 }

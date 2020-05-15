@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.List;
+import java.util.regex.Matcher;
 
 /**
  * 控制层相关代码生成工具
@@ -96,11 +97,11 @@ public class FcmServerCodeService {
      * @param beanInfo 实体信息
      * @return
      */
-    public String getServerFileDir(ServiceInfo serviceInfo,ServerCodeType type){
-        return fcmFileConfigure.getCodeBasePath()+File.separator+ CodeLocationParseUtils.getModelLocation(serviceInfo.getModelName())
-                +File.separator+CodeLocationParseUtils.getControllerPackageName(serviceInfo.getModelName(),type).replaceAll("\\.",File.separator);
+    public String getServerFileDir(ServiceInfo serviceInfo, ServerCodeType type) {
+        String codeBasePath = fcmFileConfigure.getCodeBasePath();
+        String modelLocation = CodeLocationParseUtils.getModelLocation(serviceInfo.getModelName());
+        String controllerPackageName = CodeLocationParseUtils.getControllerPackageName(serviceInfo.getModelName(), type).replaceAll("\\.", Matcher.quoteReplacement(File.separator));
+        return codeBasePath + File.separator + modelLocation + File.separator + controllerPackageName;
     }
-
-
 
 }
