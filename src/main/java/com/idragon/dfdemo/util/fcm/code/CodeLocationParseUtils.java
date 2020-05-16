@@ -33,7 +33,8 @@ public class CodeLocationParseUtils {
             mapperCache.put("订购流程","trade");
             mapperCache.put("订单中心","trade");
             mapperCache.put("逆向交易","trade");
-            mapperCache.put("注册登录","member");
+            mapperCache.put("登录注册","member");
+            mapperCache.put("基础会员信息","member");
         }
         return mapperCache;
     }
@@ -44,7 +45,7 @@ public class CodeLocationParseUtils {
     }
     /**
      * 获取指定模块，指定类型实体的包名称
-     * @param model
+     * @param modelName
      * @param type
      * @return
      */

@@ -75,6 +75,9 @@ public class ServiceInfo {
                     String inPath=getImportPath(info.getInType(),utils);
                     if(!StringUtils.isBlank(inPath)){
                         BeanInfo inBean=utils.getBeanInfo(info.getInType());
+                        if (inBean == null) {
+                            continue;
+                        }
                         switch (inBean.getType()){
                             case QUERY:
                                 info.setQueryReq(true);
