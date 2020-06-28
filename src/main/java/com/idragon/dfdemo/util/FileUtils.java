@@ -46,19 +46,26 @@ public class FileUtils {
             file.mkdir();
         }
     }
-
     /**
      * 写内容到文本文件当中
      * @param file
      * @param contentß
      */
-    public static  void wiriteFileContent(File file,String content) throws IOException {
+    public static  void writeFileContent(File file,String content) throws IOException {
+        writeFileContent(file,content,null);
+    }
+    /**
+     * 写内容到文本文件当中
+     * @param file
+     * @param contentß
+     */
+    public static  void writeFileContent(File file,String content,String charSet) throws IOException {
         FileOutputStream fileOutputStream = null;
         if(!file.exists()){
             file.createNewFile();
         }
         fileOutputStream = new FileOutputStream(file);
-        fileOutputStream.write(content.getBytes("utf-8"));
+        fileOutputStream.write(content.getBytes(StringUtils.isBlank(charSet)?"utf-8":charSet));
         fileOutputStream.flush();
         fileOutputStream.close();
     }

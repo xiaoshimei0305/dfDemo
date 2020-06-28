@@ -166,7 +166,7 @@ public class OcjShortAddressRequest {
             System.out.println("数据内容["+i+"]："+key+"="+value);
             sb.append(key).append(",").append(value).append("\n");
         }
-        FileUtils.wiriteFileContent(new File(targetFile),sb.toString());
+        FileUtils.writeFileContent(new File(targetFile),sb.toString());
     }
 
 
