@@ -85,10 +85,14 @@ public class SwaggerInfoUtils {
         }
         return sb.toString();
     }
-
-
     private static String getMethodLine(JSONObject item){
-        return item.getString("modelName")+","+item.getString("tag")+","+item.getString("name")+","+item.getString("url");
+        StringBuffer sb=new StringBuffer(item.getString("modelName"));
+        sb.append(",").append(item.getString("tag"));
+        sb.append(",").append(item.getString("name"));
+        sb.append(",").append(item.getString("url"));
+        sb.append(",").append("http://fcm-dev.ocj.com.cn/api/newMedia/").append(item.getString("modelName")).append("/swagger-ui.html#").append(item.getString("tag"));
+        sb.append(",").append("http://fcm-dev.ocj.com.cn").append(item.getString("url"));
+        return sb.toString();
     }
 
     public static JSONArray getMethodByModelName(String modelName){
