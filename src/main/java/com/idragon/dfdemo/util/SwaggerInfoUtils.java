@@ -95,11 +95,17 @@ public class SwaggerInfoUtils {
         return sb.toString();
     }
 
-    public static JSONArray getMethodByModelName(String modelName){
-        SwaggerInfoUtils tools=new SwaggerInfoUtils("http://fcm-dev.ocj.com.cn/api/newMedia/"+modelName+"/v2/api-docs",modelName);
+    public static JSONArray getMethodByModelName(String modelName,String groupName){
+        String path="http://fcm-dev.ocj.com.cn/api/newMedia/"+modelName+"/v2/api-docs";
+        if(!StringUtils.isBlank(groupName)){
+            path+="?group="+groupName;
+        }
+        SwaggerInfoUtils tools=new SwaggerInfoUtils(path,modelName);
         return tools.getMethods();
     }
-
+    public static JSONArray getMethodByModelName(String modelName){
+        return getMethodByModelName(modelName,null);
+    }
 
 
 
@@ -107,12 +113,12 @@ public class SwaggerInfoUtils {
         JSONArray methodList=new JSONArray();
         methodList.addAll(getMethodByModelName("cms"));
         methodList.addAll(getMethodByModelName("login"));
-        methodList.addAll(getMethodByModelName("trade"));
+        methodList.addAll(getMethodByModelName("trade","fcm-trade"));
         methodList.addAll(getMethodByModelName("member"));
         methodList.addAll(getMethodByModelName("search"));
         methodList.addAll(getMethodByModelName("item"));
         methodList.addAll(getMethodByModelName("marketing"));
-        FileUtils.writeFileContent(new File("/Users/chenxinjun/Downloads/fuck.csv"),getToExcelStr(methodList),"GBK");
+        FileUtils.writeFileContent(new File("/Users/chenxinjun/Downloads/fcmInterface.csv"),getToExcelStr(methodList),"GBK");
         System.out.println("=================================");
     }
 }
