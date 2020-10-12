@@ -2,7 +2,10 @@ package com.idragon.dfdemo.util;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.naming.Context;
+import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.net.InetAddress;
 
 /**
  * 文件工具
@@ -98,5 +101,10 @@ public class FileUtils {
             }
         }
         return sbf.toString();
+    }
+
+
+    public static void main(String[] args) throws Exception {
+
     }
 }
