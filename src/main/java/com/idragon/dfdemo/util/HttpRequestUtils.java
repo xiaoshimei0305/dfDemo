@@ -70,7 +70,25 @@ public class HttpRequestUtils {
             return null;
         }
         try {
-            return JSONObject.parseObject(result);
+            JSONObject resultJson= JSONObject.parseObject(result);
+            return resultJson;
+        }catch (Exception e){
+            log.error("url 请求失败：{}",url);
+        }
+        return null;
+    }
+    /**
+     * GET 获取商品信息
+     * @param url
+     * @return
+     */
+    public static JSONObject getReplaceRef(String url){
+        String result=getRequest(url);
+        if(StringUtils.isBlank(result)){
+            return null;
+        }
+        try {
+            return JSONObject.parseObject(result.replaceAll("\"\\$ref\"","\"\\$CherryRef\""));
         }catch (Exception e){
             log.error("url 请求失败：{}",url);
         }
