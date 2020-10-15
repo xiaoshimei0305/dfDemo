@@ -61,7 +61,7 @@ public class CodeTitle {
     }
 
     public void initTable(List<TableItem> responseTable){
-        responseTable.add(new TableItem(this.getDepth(),"编号:"+code+",标题："+title));
+        responseTable.add(new TableItem(this.getDepth(),title+"（"+code+"）"));
         if(this.fieldInfoList!=null&&this.fieldInfoList.size()>0){
             for(int i=0;i<this.fieldInfoList.size();i++){
                 this.fieldInfoList.get(i).initTable(this.getDepth(),responseTable);

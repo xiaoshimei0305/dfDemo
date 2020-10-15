@@ -39,7 +39,7 @@ public class TableItem {
             sb.append("\t");
         }
         if(StringUtils.isBlank(this.name)){
-            return sb.toString()+"======"+desc+"======";
+            return sb.toString()+desc;
         }else{
             return sb.toString()+name+"\t"+type+"\t"+length+"\t"+required+"\t"+desc;
         }

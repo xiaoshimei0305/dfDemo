@@ -17,7 +17,7 @@ public class FieldInfo {
     private boolean required;
     public void initTable(int depth,List<TableItem> responseTable){
         if(subInfo!=null){
-            responseTable.add(new TableItem(depth,"属性："+field+"，描述："+description));
+            responseTable.add(new TableItem(depth,field+"["+description+"]"));
             subInfo.initTable(responseTable);
         }else{
             responseTable.add(new TableItem(depth,field,type,"",required,description));
