@@ -62,10 +62,14 @@ public class SwaggerInfoUtils {
         }
         name=name.replace("#/definitions/","").trim();
         JSONObject objectInfo=objectMap.getJSONObject(name);
+        System.out.println("key:"+name+",value:"+objectInfo.toJSONString());
         if(objectInfo==null){
             return example;
         }
         JSONObject properties = objectInfo.getJSONObject("properties");
+        if(properties==null){
+            return example;
+        }
         Set<String> propertiesKeys = properties.keySet();
         JSONArray propertiesList=new JSONArray();
         for(String itemKey:propertiesKeys){
@@ -79,6 +83,10 @@ public class SwaggerInfoUtils {
                 String type=itemContent.getString("type");
                 if("array".equalsIgnoreCase(type)){
                     example.put(itemKey,new JSONArray());
+                    if(itemContent.containsKey("items")){
+                        String typeObject= itemContent.getJSONObject("items").getString("$CherryRef");
+                        example.getJSONArray(itemKey).add(getExample(typeObject,objectMap));
+                    }
                 } else if("object".equalsIgnoreCase(type)){
                     example.put(itemKey,new JSONObject());
                 }else{
@@ -112,26 +120,33 @@ public class SwaggerInfoUtils {
         objectDesc.put("type",objectInfo.getString("type"));
         JSONArray requiredList = objectInfo.getJSONArray("required");
         JSONObject properties = objectInfo.getJSONObject("properties");
-        Set<String> propertiesKeys = properties.keySet();
         JSONArray propertiesList=new JSONArray();
-        for(String itemKey:propertiesKeys){
-            JSONObject item=new JSONObject();
-            JSONObject itemContent=properties.getJSONObject(itemKey);
-            item.put("field",itemKey);
-            item.put("description",itemContent.getString("description"));
-            item.put("format",itemContent.getString("format"));
-            item.put("type",itemContent.getString("type"));
-            item.put("required",requiredList==null?false:requiredList.contains(itemKey));
-            if(itemContent.containsKey("example")){
-                item.put("example",itemContent.getString("example"));
-            }else{
-                item.put("example",itemContent.getString("type"));
+        if(properties!=null){
+            Set<String> propertiesKeys = properties.keySet();
+            for(String itemKey:propertiesKeys){
+                JSONObject item=new JSONObject();
+                JSONObject itemContent=properties.getJSONObject(itemKey);
+                item.put("field",itemKey);
+                item.put("description",itemContent.getString("description"));
+                item.put("format",itemContent.getString("format"));
+                item.put("type",itemContent.getString("type"));
+                item.put("required",requiredList==null?false:requiredList.contains(itemKey));
+                if(itemContent.containsKey("example")){
+                    item.put("example",itemContent.getString("example"));
+                }else{
+                    item.put("example",itemContent.getString("type"));
+                }
+                //引用实体定义
+                if(itemContent.containsKey("$CherryRef")){
+                    item.put("subInfo",getObjectProperties(itemContent.getString("$CherryRef"),objectMap));
+                }else if("array".equalsIgnoreCase(itemContent.getString("type"))){
+                    if(itemContent.containsKey("items")){
+                        String typeObject= itemContent.getJSONObject("items").getString("$CherryRef");
+                        item.put("subInfo",getObjectProperties(typeObject,objectMap));
+                    }
+                }
+                propertiesList.add(item);
             }
-            //引用实体定义
-            if(itemContent.containsKey("$CherryRef")){
-                item.put("subInfo",getObjectProperties(itemContent.getString("$CherryRef"),objectMap));
-            }
-            propertiesList.add(item);
         }
         objectDesc.put("propertiesList",propertiesList);
         return objectDesc;
@@ -147,8 +162,8 @@ public class SwaggerInfoUtils {
             JSONObject objectMap=resultJson.getJSONObject("definitions");
             Set<String> keys=paths.keySet();
             for(String key:keys){
-                if(getIgnoreSet().contains(key)){
-                    System.out.println("接口被忽略掉："+key);
+                if(!getIgnoreSet().contains(key)){
+                    System.out.println("接口被忽略掉[反过来]："+key);
                     continue;
                 }
                 JSONObject methodJson=new JSONObject();
@@ -175,28 +190,30 @@ public class SwaggerInfoUtils {
                     if(parameters==null){
                         parameters=new JSONArray();
                     }
+                    JSONObject requestExample=new JSONObject();
                     if(parameters.size()>0){
                         for(int i=0;i<parameters.size();i++){
                             JSONObject item=parameters.getJSONObject(i);
                             String type=item.getString("type");
                             if(!StringUtils.isBlank(type)){
                                 if("array".equalsIgnoreCase(type)){
-                                    item.put("example",new JSONArray());
+                                    requestExample.put(item.getString("name"),new JSONArray());
                                 } else if("object".equalsIgnoreCase(type)){
-                                    item.put("example",new JSONObject());
+                                    requestExample.put(item.getString("name"),new JSONObject());
                                 }else{
-                                    item.put("example",type);
+                                    requestExample.put(item.getString("name"),type);
                                 }
                             }
                             if(item.containsKey("schema")){
                                 String myRef=item.getJSONObject("schema").getString("$CherryRef");
-                                item.put("example",getExample(myRef,objectMap));
+                                requestExample.put(item.getString("name"),getExample(myRef,objectMap));
                                 item.put("properties",getObjectProperties(myRef,objectMap));
                             }
                         }
                     }
                     //请求
                     methodJson.put("request",parameters);
+                    methodJson.put("requestExample",requestExample);
                     //响应
                     methodJson.put("response",data.getJSONObject("responses").getJSONObject("200"));
                     JSONObject response=methodJson.getJSONObject("response");
@@ -280,6 +297,6 @@ public class SwaggerInfoUtils {
         methodList.addAll(getMethodByModelName("marketing"));
         return methodList;
     }
-    private static String ignoreMethodAddress="接口地址\n";
+    private static String ignoreMethodAddress="/api/newMedia/cms/fixedPage/pageAllInfo\n";
 
 }
