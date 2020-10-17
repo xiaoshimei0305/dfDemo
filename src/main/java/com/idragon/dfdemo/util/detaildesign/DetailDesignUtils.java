@@ -15,6 +15,8 @@ import java.util.List;
  * @author chenxinjun
  */
 public class DetailDesignUtils {
+
+    public static String debuggerAddress="";
     /**
      * 导出excel
      * @throws IOException
@@ -25,9 +27,13 @@ public class DetailDesignUtils {
     }
 
     /**
-     * 导出详细设计word文档
+     *  导出文档
+     * @param excelName
+     * @param wordModelName
+     * @param exportFileName
+     * @throws Exception
      */
-    private static void exportWord(String excelName,String wordModelName,String exportFileName) throws Exception {
+    private static void exportWord(String excelName,String wordModelName,String exportDir) throws Exception {
         //收集接口数据
         JSONArray excelList = ExcelUtils.getExcelData(excelName).getJSONArray("FCM接口列表");
         JSONArray fcmSwaggerInfoList=SwaggerInfoUtils.getFcmInterfaceInfo();
@@ -38,21 +44,45 @@ public class DetailDesignUtils {
                 addressMap.put(item.getString("url"),item);
             }
         }
-
+        List<String> authors=new ArrayList<>();
         List<MethodInfo> infoList=new ArrayList<>();
         if(excelList!=null&&excelList.size()>0){
             for(int i=0;i<excelList.size();i++){
                 MethodInfo info=new MethodInfo(excelList.getJSONObject(i));
                 info.initSwaggerInfo(addressMap);
+                if(!authors.contains(info.getAuthor())){
+                    authors.add(info.getAuthor());
+                }
                 infoList.add(info);
             }
         }
+        for(String author:authors){
+           int result= exportWord(infoList,wordModelName,exportDir+"/"+author+".docx",author);
+            System.out.println("负责人：【"+author+"】，接口总数："+result);
+        }
+    }
+    /**
+     * 导出详细设计word文档
+     */
+    private static int exportWord(List<MethodInfo> infoList,String wordModelName,String exportFileName,String author) throws Exception {
+        int total=0;
         //获取文档模版
         WordUtils utils=new WordUtils();
         XWPFDocument contentDoc=utils.getDocument(wordModelName);
-        for(int i=0;i<10;i++){
+        for(int i=0;i<infoList.size();i++){
             MethodInfo methodInfo=infoList.get(i);
-            System.out.println("开始["+i+"/"+infoList.size()+"]"+methodInfo.getAddress());
+            if(DetailDesignUtils.debuggerAddress.equalsIgnoreCase(methodInfo.getAddress())){
+                System.out.println("这里要进行调试了");
+            }
+            String address=methodInfo.getAddress();
+            address=address.replaceAll("\\{","_");
+            address=address.replaceAll("\\}","_");
+            if(!StringUtils.isBlank(author)&&!author.equalsIgnoreCase(methodInfo.getAuthor())){
+                utils.replaceText(contentDoc,address,"");
+                continue;
+            }else{
+                total++;
+            }
             XWPFDocument modelItem = utils.getDocument(DetailDesignUtils.class.getResource("/").getPath()+"doc/restInterfaceModel.docx");
             utils.replaceText(modelItem,"name",methodInfo.getName());
             utils.replaceText(modelItem,"remark",methodInfo.getRemark());
@@ -63,13 +93,11 @@ public class DetailDesignUtils {
             setRespBaseInfo(modelItem,methodInfo);
             modelItem=utils.importModelToDocument(modelItem,getTableDocumentWithData(methodInfo.getRequest()),"Idr_req_table");
             modelItem=utils.importModelToDocument(modelItem,getTableDocumentWithData(methodInfo.getResponse()),"Idr_resp_table");
-            String address=methodInfo.getAddress();
-            address=address.replaceAll("\\{","[");
-            address=address.replaceAll("\\}","]");
             contentDoc=utils.importModelToDocument(contentDoc,modelItem,address);
         }
         //导出文档
         utils.exportFile(contentDoc,exportFileName);
+        return total;
     }
 
 
@@ -83,7 +111,8 @@ public class DetailDesignUtils {
         table.getRow(0).getCell(1).setText(methodInfo.getModel());
         table.getRow(1).getCell(1).setText(methodInfo.getName());
         table.getRow(2).getCell(1).setText(methodInfo.getAddress());
-        table.getRow(3).getCell(1).setText("POST");
+        table.getRow(3).getCell(1).setText(methodInfo.useDesc());
+        table.getRow(4).getCell(1).setText(methodInfo.getPostWay());
     }
 
     private  static void setRespBaseInfo(XWPFDocument modelItem,MethodInfo methodInfo){
@@ -219,7 +248,7 @@ public class DetailDesignUtils {
 
     public static void main(String[] args) throws Exception {
         //exportExcel("/Users/chenxinjun/Downloads/fcmInterface.csv");
-        exportWord("/Users/chenxinjun/Downloads/商城REST接口梳理.xlsx","/Users/chenxinjun/Downloads/model.docx","/Users/chenxinjun/Downloads/result.docx");
+        exportWord("/Users/chenxinjun/Downloads/商城REST接口梳理.xlsx","/Users/chenxinjun/Downloads/model.docx","/Users/chenxinjun/Downloads/xs");
 //        JSONArray info = SwaggerInfoUtils.getFcmInterfaceInfo();
 //        System.out.println(info);
         System.out.println("=================================");

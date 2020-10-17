@@ -177,13 +177,15 @@ public class SwaggerInfoUtils {
                     System.out.println("接口被忽略掉[反过来]："+key);
                     continue;
                 }
-                if("/api/newMedia/cms/queryTv/queryTvProgrammingByDate".equalsIgnoreCase(key)){
+                if(DetailDesignUtils.debuggerAddress.equalsIgnoreCase(key)){
                     System.out.println("这里要进行调试了");
                 }
                 JSONObject methodJson=new JSONObject();
                 JSONObject data=paths.getJSONObject(key);
+                String postWay="POST";
                 if(data.containsKey("get")){
                     data=data.getJSONObject("get");
+                    postWay="GET";
                 }else if(data.containsKey("post")){
                     data=data.getJSONObject("post");
                 }else{
@@ -199,6 +201,7 @@ public class SwaggerInfoUtils {
                     methodJson.put("url",key);
                     methodJson.put("name",data.getString("summary").replaceAll(",","||"));
                     methodJson.put("tag",tag);
+                    methodJson.put("postWay",postWay);
                     methodJson.put("modelName",modelName);
                     JSONArray parameters=data.getJSONArray("parameters");
                     if(parameters==null){
@@ -311,6 +314,6 @@ public class SwaggerInfoUtils {
         methodList.addAll(getMethodByModelName("marketing"));
         return methodList;
     }
-    private static String ignoreMethodAddress="\n";
+    private static String ignoreMethodAddress="接口地址\n";
 
 }

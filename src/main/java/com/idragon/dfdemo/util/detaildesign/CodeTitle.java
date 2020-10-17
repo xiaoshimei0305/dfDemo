@@ -22,6 +22,10 @@ public class CodeTitle {
     private List<FieldInfo> fieldInfoList;
     private CodeTitle parent;
 
+    public CodeTitle() {
+        this.fieldInfoList=new ArrayList<>();
+    }
+
     public CodeTitle(JSONObject info) {
         this(null,info);
     }

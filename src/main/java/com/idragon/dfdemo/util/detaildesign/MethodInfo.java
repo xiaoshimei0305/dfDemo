@@ -89,6 +89,7 @@ public class MethodInfo {
      */
     private List<TableItem> requestTable;
 
+    private String postWay;
 
     public MethodInfo(JSONObject item) {
         this.model=item.getString("模块");
@@ -129,16 +130,61 @@ public class MethodInfo {
                     this.response.initTable(responseTable);
                 }
                 this.requestExample=item.getString("requestExample");
+                this.postWay=item.getString("postWay");
                 JSONArray requestList=item.getJSONArray("request");
+                if(DetailDesignUtils.debuggerAddress.equalsIgnoreCase(this.getAddress())){
+                    System.out.println("这里要进行调试了");
+                }
+                CodeTitle topCodeTitle=new CodeTitle();
                 if(requestList!=null&&requestList.size()>0){
                     for(int i=0;i<requestList.size();i++){
-                        CodeTitle codeTitle=new CodeTitle(requestList.getJSONObject(i).getJSONObject("properties"));
-                        codeTitle.initTable(requestTable);
-                        this.request.add(codeTitle);
+                        JSONObject requestItem=requestList.getJSONObject(i);
+                        JSONObject properties=requestItem.getJSONObject("properties");
+                        if(properties!=null){
+                            CodeTitle codeTitle=new CodeTitle(properties);
+                            codeTitle.initTable(requestTable);
+                            this.request.add(codeTitle);
+                        }else{
+                            //用户多参数列表情况
+                            FieldInfo fieldInfo=new FieldInfo();
+                            fieldInfo.setField(requestItem.getString("name"));
+                            fieldInfo.setRequired(requestItem.getBoolean("required"));
+                            fieldInfo.setType(requestItem.getString("type"));
+                            fieldInfo.setDescription(requestItem.getString("description"));
+                            if(requestItem.containsKey("subInfo")){
+                                JSONObject data=requestItem.getJSONObject("subInfo");
+                                if(data!=null&&data.containsKey("result")){
+                                    if(data.getBoolean("result")){
+                                        fieldInfo.setSubInfo(new CodeTitle(topCodeTitle,data));
+                                    }
+                                }
+                            }
+                            topCodeTitle.getFieldInfoList().add(fieldInfo);
+                        }
+
+                    }
+                    //如果发现有顶级参数，topCodeTitle
+                    if(topCodeTitle.getFieldInfoList().size()>0){
+                        this.request.add(topCodeTitle);
                     }
                 }
             }
         }
     }
+
+    /**
+     * 使用情况描述
+     * @return
+     */
+    public String useDesc(){
+        StringBuffer sb=new StringBuffer();
+        sb.append("IOS[").append(ios?"是":"否").append("],");
+        sb.append("安卓[").append(android?"是":"否").append("],");
+        sb.append("小程序[").append(mini?"是":"否").append("],");
+        sb.append("PC[").append(pc?"是":"否").append("],");
+        sb.append("M版[").append(m?"是":"否").append("],");
+        return sb.toString();
+    }
+
 
 }
