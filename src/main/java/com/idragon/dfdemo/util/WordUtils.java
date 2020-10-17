@@ -84,6 +84,31 @@ public class WordUtils {
     }
 
     /**
+     * 文本内容回撤替换
+     * @param cell
+     */
+    public  void addBreakInCell(XWPFTableCell cell) {
+            for (XWPFParagraph p : cell.getParagraphs()) {
+                //XWPFRun对象定义具有一组公共属性的文本区域
+                for (XWPFRun run : p.getRuns()) {
+                    if(run.getText(0)!= null && run.getText(0).contains("\n")) {
+                        String[] lines = run.getText(0).split("\n");
+                        if(lines.length > 0) {
+                            // set first line into XWPFRun
+                            run.setText(lines[0], 0);
+                            for(int i=1;i<lines.length;i++){
+                                // add break and insert new text //中断
+                                run.addBreak();
+				                //run.addCarriageReturn();//回车符，但是不起作用
+                                run.setText(lines[i]);
+                            }
+                        }
+                    }
+                }
+            }
+    }
+
+    /**
      * 复制内容
      * @param sourceRow
      * @param targetRow

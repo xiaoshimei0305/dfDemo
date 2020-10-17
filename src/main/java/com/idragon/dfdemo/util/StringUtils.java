@@ -1,5 +1,7 @@
 package com.idragon.dfdemo.util;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.regex.Matcher;
@@ -41,6 +43,22 @@ public class StringUtils  extends org.apache.commons.lang3.StringUtils {
         }
         return defaultValue;
     }
+
+    /**
+     * 美化json数据
+     * @param jsonString
+     * @return
+     */
+    public static String toPrettyFormatJson(String jsonString){
+        if(isBlank(jsonString)){
+            return "{}";
+        }
+        JSONObject object = JSONObject.parseObject(jsonString);
+        String pretty = JSONObject.toJSONString(object, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue,
+                SerializerFeature.WriteDateUseDateFormat);
+        return pretty;
+    }
+
 
 
 }

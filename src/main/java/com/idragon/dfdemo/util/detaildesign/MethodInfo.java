@@ -137,15 +137,6 @@ public class MethodInfo {
                         this.request.add(codeTitle);
                     }
                 }
-                System.out.println("=========requestTable===============");
-                for(int i=0;i<this.requestTable.size();i++){
-                    System.out.println(this.requestTable.get(i));
-                }
-                System.out.println("=========responseTable===============");
-                for(int i=0;i<this.responseTable.size();i++){
-                    System.out.println(this.responseTable.get(i));
-                }
-                System.out.println("=========end===============");
             }
         }
     }

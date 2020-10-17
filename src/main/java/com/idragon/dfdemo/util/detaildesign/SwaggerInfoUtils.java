@@ -1,10 +1,10 @@
-package com.idragon.dfdemo.util;
+package com.idragon.dfdemo.util.detaildesign;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.idragon.dfdemo.util.HttpRequestUtils;
+import com.idragon.dfdemo.util.StringUtils;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -62,7 +62,6 @@ public class SwaggerInfoUtils {
         }
         name=name.replace("#/definitions/","").trim();
         JSONObject objectInfo=objectMap.getJSONObject(name);
-        System.out.println("key:"+name+",value:"+objectInfo.toJSONString());
         if(objectInfo==null){
             return example;
         }
@@ -71,7 +70,6 @@ public class SwaggerInfoUtils {
             return example;
         }
         Set<String> propertiesKeys = properties.keySet();
-        JSONArray propertiesList=new JSONArray();
         for(String itemKey:propertiesKeys){
             JSONObject itemContent=properties.getJSONObject(itemKey);
             //引用实体定义
@@ -85,7 +83,12 @@ public class SwaggerInfoUtils {
                     example.put(itemKey,new JSONArray());
                     if(itemContent.containsKey("items")){
                         String typeObject= itemContent.getJSONObject("items").getString("$CherryRef");
-                        example.getJSONArray(itemKey).add(getExample(typeObject,objectMap));
+                        //死循环情况，中止操作
+                        if(!StringUtils.isBlank(typeObject)&&typeObject.replace("#/definitions/","").equalsIgnoreCase(name)){
+                            example.getJSONArray(itemKey).add(new JSONArray());
+                        }else{
+                            example.getJSONArray(itemKey).add(getExample(typeObject,objectMap));
+                        }
                     }
                 } else if("object".equalsIgnoreCase(type)){
                     example.put(itemKey,new JSONObject());
@@ -106,14 +109,16 @@ public class SwaggerInfoUtils {
     public JSONObject getObjectProperties(String name,JSONObject objectMap){
         JSONObject objectDesc=new JSONObject();
         if(StringUtils.isBlank(name)){
-            objectDesc.put("desc","未获取到对象信息"+name);
+            objectDesc.put("desc","字段名称不能为空");
+            objectDesc.put("result",false);
             return objectDesc;
         }
         name=name.replace("#/definitions/","").trim();
         objectDesc.put("code",name);
         JSONObject objectInfo=objectMap.getJSONObject(name);
         if(objectInfo==null){
-            objectDesc.put("desc","暂时未获取到指定实体"+name);
+            objectDesc.put("desc","暂时未获取到指定实体描述信息"+name);
+            objectDesc.put("result",false);
             return objectDesc;
         }
         objectDesc.put("title",objectInfo.getString("title"));
@@ -142,13 +147,19 @@ public class SwaggerInfoUtils {
                 }else if("array".equalsIgnoreCase(itemContent.getString("type"))){
                     if(itemContent.containsKey("items")){
                         String typeObject= itemContent.getJSONObject("items").getString("$CherryRef");
-                        item.put("subInfo",getObjectProperties(typeObject,objectMap));
+                        //死循环情况，中止操作
+                        if(!StringUtils.isBlank(typeObject)&&typeObject.replace("#/definitions/","").equalsIgnoreCase(name)){
+                            item.put("subInfo",new JSONObject());
+                        }else{
+                            item.put("subInfo",getObjectProperties(typeObject,objectMap));
+                        }
                     }
                 }
                 propertiesList.add(item);
             }
         }
         objectDesc.put("propertiesList",propertiesList);
+        objectDesc.put("result",true);
         return objectDesc;
     }
 
@@ -162,9 +173,12 @@ public class SwaggerInfoUtils {
             JSONObject objectMap=resultJson.getJSONObject("definitions");
             Set<String> keys=paths.keySet();
             for(String key:keys){
-                if(!getIgnoreSet().contains(key)){
+                if(getIgnoreSet().contains(key)){
                     System.out.println("接口被忽略掉[反过来]："+key);
                     continue;
+                }
+                if("/api/newMedia/cms/queryTv/queryTvProgrammingByDate".equalsIgnoreCase(key)){
+                    System.out.println("这里要进行调试了");
                 }
                 JSONObject methodJson=new JSONObject();
                 JSONObject data=paths.getJSONObject(key);
@@ -297,6 +311,6 @@ public class SwaggerInfoUtils {
         methodList.addAll(getMethodByModelName("marketing"));
         return methodList;
     }
-    private static String ignoreMethodAddress="/api/newMedia/cms/fixedPage/pageAllInfo\n";
+    private static String ignoreMethodAddress="\n";
 
 }
