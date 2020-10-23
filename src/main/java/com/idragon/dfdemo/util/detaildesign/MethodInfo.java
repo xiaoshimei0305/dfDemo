@@ -182,7 +182,7 @@ public class MethodInfo {
         sb.append("安卓[").append(android?"是":"否").append("],");
         sb.append("小程序[").append(mini?"是":"否").append("],");
         sb.append("PC[").append(pc?"是":"否").append("],");
-        sb.append("M版[").append(m?"是":"否").append("],");
+        sb.append("M版[").append(m?"是":"否").append("]");
         return sb.toString();
     }
 

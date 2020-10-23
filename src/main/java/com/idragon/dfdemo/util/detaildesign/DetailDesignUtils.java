@@ -56,24 +56,34 @@ public class DetailDesignUtils {
                 infoList.add(info);
             }
         }
+        int maxSize=100;
         for(String author:authors){
-           int result= exportWord(infoList,wordModelName,exportDir+"/"+author+".docx",author);
-            System.out.println("负责人：【"+author+"】，接口总数："+result);
+           int result= exportWord(infoList,wordModelName,exportDir+"/"+author+"【"+maxSize+"个一组】",author,maxSize);
+            System.out.println("【"+author+"】接口总数："+result);
         }
     }
+
     /**
-     * 导出详细设计word文档
+     * 导出接口到文档中
+     * @param infoList
+     * @param wordModelName
+     * @param exportDir
+     * @param author
+     * @param maxSize
+     * @return
+     * @throws Exception
      */
-    private static int exportWord(List<MethodInfo> infoList,String wordModelName,String exportFileName,String author) throws Exception {
+    private static int exportWord(List<MethodInfo> infoList,String wordModelName,String exportDir,String author,int maxSize) throws Exception {
         int total=0;
+        int documentSize=1;
+        int cur=0;
+        String currentRestName="";
         //获取文档模版
         WordUtils utils=new WordUtils();
         XWPFDocument contentDoc=utils.getDocument(wordModelName);
         for(int i=0;i<infoList.size();i++){
             MethodInfo methodInfo=infoList.get(i);
-            if(DetailDesignUtils.debuggerAddress.equalsIgnoreCase(methodInfo.getAddress())){
-                System.out.println("这里要进行调试了");
-            }
+
             String address=methodInfo.getAddress();
             address=address.replaceAll("\\{","_");
             address=address.replaceAll("\\}","_");
@@ -82,6 +92,7 @@ public class DetailDesignUtils {
                 continue;
             }else{
                 total++;
+                cur++;
             }
             XWPFDocument modelItem = utils.getDocument(DetailDesignUtils.class.getResource("/").getPath()+"doc/restInterfaceModel.docx");
             utils.replaceText(modelItem,"name",methodInfo.getName());
@@ -94,9 +105,17 @@ public class DetailDesignUtils {
             modelItem=utils.importModelToDocument(modelItem,getTableDocumentWithData(methodInfo.getRequest()),"Idr_req_table");
             modelItem=utils.importModelToDocument(modelItem,getTableDocumentWithData(methodInfo.getResponse()),"Idr_resp_table");
             contentDoc=utils.importModelToDocument(contentDoc,modelItem,address);
+            currentRestName=methodInfo.getName();
+            if(cur>=maxSize){
+                //超过指定文档，添加新文档导出
+                documentSize++;
+                utils.exportFile(contentDoc,exportDir+"/"+currentRestName+"【"+documentSize+"】.docx");
+                contentDoc=utils.getDocument(wordModelName);
+                cur=0;
+            }
         }
         //导出文档
-        utils.exportFile(contentDoc,exportFileName);
+        utils.exportFile(contentDoc,exportDir+"/"+currentRestName+"【"+documentSize+"】.docx");
         return total;
     }
 
@@ -248,7 +267,7 @@ public class DetailDesignUtils {
 
     public static void main(String[] args) throws Exception {
         //exportExcel("/Users/chenxinjun/Downloads/fcmInterface.csv");
-        exportWord("/Users/chenxinjun/Downloads/商城REST接口梳理.xlsx","/Users/chenxinjun/Downloads/model.docx","/Users/chenxinjun/Downloads/xs");
+        exportWord("/Users/chenxinjun/Downloads/商城REST接口梳理.xlsx","/Users/chenxinjun/Downloads/model.docx","/Users/chenxinjun/Downloads/model");
 //        JSONArray info = SwaggerInfoUtils.getFcmInterfaceInfo();
 //        System.out.println(info);
         System.out.println("=================================");
