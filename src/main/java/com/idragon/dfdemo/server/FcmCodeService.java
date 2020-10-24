@@ -2,9 +2,9 @@ package com.idragon.dfdemo.server;
 
 import com.idragon.dfdemo.configure.FcmFileConfigure;
 import com.idragon.dfdemo.constant.ServerCodeType;
-import com.idragon.dfdemo.util.StringUtils;
 import com.idragon.dfdemo.util.fcm.BeanParseUtils;
 import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
+import com.idragon.tool.base.StringUtils;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;

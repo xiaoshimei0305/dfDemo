@@ -1,7 +1,7 @@
 package com.idragon.dfdemo.configure;
 
 import com.idragon.dfdemo.Application;
-import com.idragon.dfdemo.util.StringUtils;
+import com.idragon.tool.base.StringUtils;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 import lombok.Data;

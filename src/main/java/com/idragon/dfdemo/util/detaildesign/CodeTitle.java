@@ -2,7 +2,7 @@ package com.idragon.dfdemo.util.detaildesign;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.idragon.dfdemo.util.StringUtils;
+import com.idragon.tool.base.StringUtils;
 import lombok.Data;
 
 import java.util.ArrayList;

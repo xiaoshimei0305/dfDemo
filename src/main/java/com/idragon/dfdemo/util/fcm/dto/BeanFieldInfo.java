@@ -1,6 +1,6 @@
 package com.idragon.dfdemo.util.fcm.dto;
 
-import com.idragon.dfdemo.util.StringUtils;
+import com.idragon.tool.base.StringUtils;
 import lombok.Data;
 
 /**

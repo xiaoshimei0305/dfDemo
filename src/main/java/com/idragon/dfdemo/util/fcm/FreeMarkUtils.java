@@ -6,7 +6,6 @@ import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author chenxinjun

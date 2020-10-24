@@ -1,6 +1,5 @@
 package com.idragon.dfdemo.util.fcm;
 
-import com.idragon.dfdemo.util.StringUtils;
 import com.idragon.dfdemo.util.fcm.dto.BeanFieldInfo;
 import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
 

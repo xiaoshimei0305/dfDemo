@@ -1,6 +1,6 @@
 package com.idragon.dfdemo.configure;
 
-import com.idragon.dfdemo.util.StringUtils;
+import com.idragon.tool.base.StringUtils;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

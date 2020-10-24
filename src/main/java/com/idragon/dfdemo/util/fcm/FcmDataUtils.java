@@ -2,12 +2,14 @@ package com.idragon.dfdemo.util.fcm;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.idragon.dfdemo.util.fcm.dto.*;
+import com.idragon.dfdemo.util.fcm.dto.BeanFieldInfo;
+import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
+import com.idragon.dfdemo.util.fcm.dto.EntityTypeEnum;
+import com.idragon.dfdemo.util.fcm.dto.InterfaceInfo;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author chenxinjun

@@ -2,7 +2,6 @@ package com.idragon.dfdemo.util.fcm.dto;
 
 import com.idragon.dfdemo.constant.ServerCodeType;
 import com.idragon.dfdemo.util.CodeLoadUtils;
-import com.idragon.dfdemo.util.StringUtils;
 import com.idragon.dfdemo.util.fcm.BeanParseUtils;
 import com.idragon.dfdemo.util.fcm.FreeMarkUtils;
 import com.idragon.dfdemo.util.fcm.code.CodeLocationParseUtils;

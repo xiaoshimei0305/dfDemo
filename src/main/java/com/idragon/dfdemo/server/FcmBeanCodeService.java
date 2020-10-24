@@ -1,7 +1,6 @@
 package com.idragon.dfdemo.server;
 
 import com.idragon.dfdemo.configure.FcmFileConfigure;
-import com.idragon.dfdemo.constant.FcmCodeConstants;
 import com.idragon.dfdemo.util.FileUtils;
 import com.idragon.dfdemo.util.fcm.BeanParseUtils;
 import com.idragon.dfdemo.util.fcm.code.CodeLocationParseUtils;

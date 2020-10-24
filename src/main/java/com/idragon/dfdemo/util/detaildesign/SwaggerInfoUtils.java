@@ -3,7 +3,7 @@ package com.idragon.dfdemo.util.detaildesign;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.idragon.dfdemo.util.HttpRequestUtils;
-import com.idragon.dfdemo.util.StringUtils;
+import com.idragon.tool.base.StringUtils;
 
 import java.util.HashSet;
 import java.util.Set;

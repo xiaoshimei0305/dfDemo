@@ -2,8 +2,8 @@ package com.idragon.dfdemo.util.fcm.code;
 
 import com.idragon.dfdemo.constant.FcmCodeConstants;
 import com.idragon.dfdemo.constant.ServerCodeType;
-import com.idragon.dfdemo.util.StringUtils;
 import com.idragon.dfdemo.util.fcm.dto.EntityTypeEnum;
+import com.idragon.tool.base.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
