@@ -2,11 +2,11 @@ package com.idragon.dfdemo.util.fcm;
 
 import com.alibaba.fastjson.JSONObject;
 import com.idragon.dfdemo.configure.FcmFileConfigure;
-import com.idragon.dfdemo.util.ExcelUtils;
 import com.idragon.dfdemo.util.WordUtils;
 import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
 import com.idragon.dfdemo.util.fcm.dto.InterfaceInfo;
 import com.idragon.dfdemo.util.fcm.word.InterfaceInfoWordUtils;
+import com.idragon.tool.excel.ExcelReadUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public class FcmWordUtils {
         String targetFilesName = workPath+ fcmFileConfigure.getResultFileName(resultFileName);
         String modelFilesName = workPath+ fcmFileConfigure.getModelFileName(modelFileName);
         String dataSourceFileName = workPath+ fcmFileConfigure.getExcelDefaultName(excelFileName);
-        JSONObject data= ExcelUtils.getExcelData(dataSourceFileName);
+        JSONObject data= ExcelReadUtils.getDataByFileName(dataSourceFileName);
         // 处理实体信息
         List<BeanInfo> beanList = FcmDataUtils.getBeanInfos(data,fcmFileConfigure.getEntitySheetName());
         BeanParseUtils beanParseUtils =new BeanParseUtils(beanList);

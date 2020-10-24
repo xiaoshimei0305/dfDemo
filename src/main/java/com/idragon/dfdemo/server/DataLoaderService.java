@@ -2,12 +2,12 @@ package com.idragon.dfdemo.server;
 
 import com.alibaba.fastjson.JSONObject;
 import com.idragon.dfdemo.configure.FcmFileConfigure;
-import com.idragon.dfdemo.util.ExcelUtils;
 import com.idragon.dfdemo.util.fcm.BeanParseUtils;
 import com.idragon.dfdemo.util.fcm.FcmDataUtils;
 import com.idragon.dfdemo.util.fcm.ServerParseUtils;
 import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
 import com.idragon.dfdemo.util.fcm.dto.InterfaceInfo;
+import com.idragon.tool.excel.ExcelReadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +33,7 @@ public class DataLoaderService {
      * @throws IOException 网络异常
      */
     public JSONObject getJsonData(String excelFile) throws IOException {
-        return ExcelUtils.getExcelData(fcmFileConfigure.getFileBasePath()+ fcmFileConfigure.getExcelDefaultName(excelFile));
+        return ExcelReadUtils.getDataByFileName(fcmFileConfigure.getFileBasePath()+ fcmFileConfigure.getExcelDefaultName(excelFile));
     }
 
     /**

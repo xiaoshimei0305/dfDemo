@@ -3,6 +3,8 @@ package com.idragon.dfdemo.util.detaildesign;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.idragon.dfdemo.util.*;
+import com.idragon.tool.base.StringUtils;
+import com.idragon.tool.excel.ExcelReadUtils;
 import org.apache.poi.xwpf.usermodel.*;
 
 import java.io.File;
@@ -35,7 +37,7 @@ public class DetailDesignUtils {
      */
     private static void exportWord(String excelName,String wordModelName,String exportDir) throws Exception {
         //收集接口数据
-        JSONArray excelList = ExcelUtils.getExcelData(excelName).getJSONArray("FCM接口列表");
+        JSONArray excelList = ExcelReadUtils.getDataByFileName(excelName).getJSONArray("FCM接口列表");
         JSONArray fcmSwaggerInfoList=SwaggerInfoUtils.getFcmInterfaceInfo();
         JSONObject addressMap=new JSONObject();
         if(fcmSwaggerInfoList!=null&&fcmSwaggerInfoList.size()>0){
@@ -266,8 +268,10 @@ public class DetailDesignUtils {
     }
 
     public static void main(String[] args) throws Exception {
+        JSONObject data = ExcelReadUtils.getDataByFileName("/Users/chenxinjun/Downloads/商城REST接口梳理.xlsx");
+        System.out.println(data.toJSONString());
         //exportExcel("/Users/chenxinjun/Downloads/fcmInterface.csv");
-        exportWord("/Users/chenxinjun/Downloads/商城REST接口梳理.xlsx","/Users/chenxinjun/Downloads/model.docx","/Users/chenxinjun/Downloads/model");
+       // exportWord("/Users/chenxinjun/Downloads/商城REST接口梳理.xlsx","/Users/chenxinjun/Downloads/model.docx","/Users/chenxinjun/Downloads/model");
 //        JSONArray info = SwaggerInfoUtils.getFcmInterfaceInfo();
 //        System.out.println(info);
         System.out.println("=================================");
