@@ -5,6 +5,8 @@ import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
 import com.idragon.tool.base.StringUtils;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 实体依赖分析工具
@@ -81,10 +83,29 @@ public class BeanParseUtils {
             List<BeanFieldInfo> fields = beanInfo.getFieldList();
             if(fields!=null&&fields.size()>0){
                 for(BeanFieldInfo fieldInfo:fields){
-                    String code=StringUtils.getFieldType(fieldInfo.getType());
+                    String code=getFieldType(fieldInfo.getType());
                     parseBeanList(getBeanInfo(code),list);
                 }
             }
         }
+    }
+
+
+    /**
+     * 字符串匹配表达式
+     */
+    private static Pattern pattern= Pattern.compile("[Ll]ist<[\\s]*([\\S]*)[\\s]*>");
+    /**
+     * 获取定义字段类型
+     * @param typeName
+     * @return
+     */
+    public static String getFieldType(String typeName){
+        Matcher matcher = pattern.matcher(typeName);
+        if(matcher.find()) {
+            String result=matcher.group(1);
+            return result;
+        }
+        return typeName;
     }
 }

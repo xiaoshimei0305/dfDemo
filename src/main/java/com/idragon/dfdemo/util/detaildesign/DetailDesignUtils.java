@@ -139,9 +139,9 @@ public class DetailDesignUtils {
     private  static void setRespBaseInfo(XWPFDocument modelItem,MethodInfo methodInfo){
         XWPFTable table = modelItem.getTables().get(1);
         WordUtils utils=new WordUtils();
-        setMutilLineText(table.getRow(0).getCell(1),StringUtils.toPrettyFormatJson(methodInfo.getRequestExample()));
+        setMutilLineText(table.getRow(0).getCell(1),StringUtils.toPrettyJsonString(methodInfo.getRequestExample()));
         utils.addBreakInCell(table.getRow(0).getCell(1));
-        setMutilLineText(table.getRow(1).getCell(1),StringUtils.toPrettyFormatJson(methodInfo.getResponseExample()));
+        setMutilLineText(table.getRow(1).getCell(1),StringUtils.toPrettyJsonString(methodInfo.getResponseExample()));
         utils.addBreakInCell(table.getRow(1).getCell(1));
     }
 

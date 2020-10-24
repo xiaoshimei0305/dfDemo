@@ -10,6 +10,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author chenxinjun
@@ -62,7 +64,7 @@ public class BeanInfo {
         if(fieldList!=null && fieldList.size()>0){
             for(BeanFieldInfo info:fieldList){
                 if(info!=null){
-                    BeanInfo beanInfo=utils.getBeanInfo(StringUtils.getFieldType(info.getType()));
+                    BeanInfo beanInfo=utils.getBeanInfo(BeanParseUtils.getFieldType(info.getType()));
                     if(beanInfo!=null){
                         String packageList=CodeLocationParseUtils.getBeanPackageName(beanInfo.getModelName(),beanInfo.getType())+"."+beanInfo.getCode();
                         importPackageList.add(packageList);
