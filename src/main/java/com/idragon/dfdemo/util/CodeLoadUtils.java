@@ -1,6 +1,6 @@
 package com.idragon.dfdemo.util;
 
-import com.idragon.tool.base.StringUtils;
+import store.idragon.tool.base.StringUtils;
 
 import java.io.File;
 import java.util.HashMap;

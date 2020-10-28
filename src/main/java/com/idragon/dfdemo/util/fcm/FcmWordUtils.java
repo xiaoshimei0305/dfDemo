@@ -6,7 +6,7 @@ import com.idragon.dfdemo.util.WordUtils;
 import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
 import com.idragon.dfdemo.util.fcm.dto.InterfaceInfo;
 import com.idragon.dfdemo.util.fcm.word.InterfaceInfoWordUtils;
-import com.idragon.tool.excel.ExcelReadUtils;
+import store.idragon.tool.excel.ExcelReadUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 import java.util.List;

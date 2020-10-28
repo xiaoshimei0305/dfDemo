@@ -1,7 +1,7 @@
 package com.idragon.dfdemo.util.detaildesign;
 
-import com.idragon.tool.base.StringUtils;
 import lombok.Data;
+import store.idragon.tool.base.StringUtils;
 
 /**
  * 表格项目

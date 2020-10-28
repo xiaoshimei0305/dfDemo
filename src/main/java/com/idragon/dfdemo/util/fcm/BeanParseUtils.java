@@ -2,7 +2,7 @@ package com.idragon.dfdemo.util.fcm;
 
 import com.idragon.dfdemo.util.fcm.dto.BeanFieldInfo;
 import com.idragon.dfdemo.util.fcm.dto.BeanInfo;
-import com.idragon.tool.base.StringUtils;
+import store.idragon.tool.base.StringUtils;
 
 import java.util.*;
 import java.util.regex.Matcher;
