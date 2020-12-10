@@ -271,11 +271,11 @@ public class DetailDesignUtils {
 //        JSONObject data = ExcelReadUtils.getDataByFileName("/Users/chenxinjun/Downloads/商城REST接口梳理.xlsx");
 //        System.out.println(data.toJSONString());
         //exportExcel("/Users/chenxinjun/Downloads/fcmInterface.csv");
-       // exportWord("/Users/chenxinjun/Downloads/商城REST接口梳理.xlsx","/Users/chenxinjun/Downloads/model.docx","/Users/chenxinjun/Downloads/model");
-//        JSONArray info = SwaggerInfoUtils.getFcmInterfaceInfo();
+        exportWord("/Users/chenxinjun/Downloads/商城REST接口梳理.xlsx","/Users/chenxinjun/Downloads/model.docx","/Users/chenxinjun/Downloads/model");
+        JSONArray info = SwaggerInfoUtils.getFcmInterfaceInfo();
 //        System.out.println(info);
-        JSONObject data = HttpRequestUtils.get("http://47.113.105.21/idragon.json");
-        System.out.println(data.toJSONString());
+//        JSONObject data = HttpRequestUtils.get("http://47.113.105.21/idragon.json");
+//        System.out.println(data.toJSONString());
         System.out.println("=================================");
     }
 }
